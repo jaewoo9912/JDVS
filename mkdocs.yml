@@ -30,7 +30,11 @@ markdown_extensions:
   - md_in_html            # 홈의 카드 레이아웃에 필요
   - admonition            # 노트/경고 박스 (!!! note)
   - pymdownx.details
-  - pymdownx.superfences  # 코드블록 강화
+  - pymdownx.superfences:   # 코드블록 강화 + mermaid 다이어그램
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.highlight
   - tables
   - toc:
