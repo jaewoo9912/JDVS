@@ -18,16 +18,28 @@ theme:
     - toc.follow
     - search.suggest
     - search.highlight
-  # 토글 없이 항상 다크 모드
+  # 기본 라이트 + 우상단 버튼으로 다크 토글
   palette:
-    scheme: slate
-    primary: black
-    accent: deep purple
+    - scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: 다크 모드로
+    - scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/weather-sunny
+        name: 라이트 모드로
 
 markdown_extensions:
   - attr_list             # 홈의 카드 레이아웃에 필요
   - md_in_html            # 홈의 카드 레이아웃에 필요
   - admonition            # 노트/경고 박스 (!!! note)
+  - pymdownx.emoji:         # :material-...: 아이콘 실제 렌더링
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.details
   - pymdownx.superfences:   # 코드블록 강화 + mermaid 다이어그램
       custom_fences:
