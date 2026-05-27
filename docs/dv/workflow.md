@@ -14,11 +14,12 @@ flowchart TD
     F --> G["⑦ Regression &<br/>Coverage Closure"]:::dv
     G --> H{{"Sign-off"}}:::signoff
 
-    classDef joint fill:#e8eaf6,stroke:#3f51b5,color:#1a237e;
-    classDef design fill:#fff3e0,stroke:#ef6c00,color:#e65100;
-    classDef dv fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
-    classDef review fill:#f3e5f5,stroke:#8e24aa,color:#4a148c;
-    classDef signoff fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20;
+    %% 글자/배경은 테마가 자동 처리 → 색 구분은 테두리로만 (라이트/다크 모두 가독성 유지)
+    classDef joint stroke:#7c4dff,stroke-width:3px;
+    classDef design stroke:#ff9800,stroke-width:3px;
+    classDef dv stroke:#42a5f5,stroke-width:3px;
+    classDef review stroke:#ab47bc,stroke-width:3px;
+    classDef signoff stroke:#66bb6a,stroke-width:3px;
 ```
 
 > 🟦 DV 주관 · 🟧 설계 주관 · 🟪 공동 review · 🟩 종료

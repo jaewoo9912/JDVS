@@ -9,6 +9,24 @@
   --md-typeset-color: rgba(255, 255, 255, 0.92);
 }
 
+/* 다크 모드 제목(H1~H4)은 순백으로 더 밝게 */
+[data-md-color-scheme="slate"] .md-typeset h1,
+[data-md-color-scheme="slate"] .md-typeset h2,
+[data-md-color-scheme="slate"] .md-typeset h3,
+[data-md-color-scheme="slate"] .md-typeset h4 {
+  color: #ffffff;
+}
+
+/* 다크 모드 사이드바/상단 메뉴(DV 개요, DV Workflow, UVM ...) 글자 밝게 */
+[data-md-color-scheme="slate"] .md-nav__link {
+  color: rgba(255, 255, 255, 0.82);
+}
+[data-md-color-scheme="slate"] .md-nav__link:hover,
+[data-md-color-scheme="slate"] .md-nav__link--active,
+[data-md-color-scheme="slate"] .md-nav__item--active > .md-nav__link {
+  color: #ffffff;
+}
+
 /* 본문 가독성: 줄간격·문단 여백 */
 .md-typeset {
   line-height: 1.75;
