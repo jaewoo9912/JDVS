@@ -18,20 +18,20 @@ theme:
     - toc.follow
     - search.suggest
     - search.highlight
-  # 기본 라이트 + 우상단 버튼으로 다크 토글
+  # 기본 다크 + 우상단 버튼으로 라이트 토글
   palette:
-    - scheme: default
-      primary: indigo
-      accent: deep purple
-      toggle:
-        icon: material/weather-night
-        name: 다크 모드로
     - scheme: slate
       primary: indigo
       accent: deep purple
       toggle:
         icon: material/weather-sunny
         name: 라이트 모드로
+    - scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: 다크 모드로
 
 markdown_extensions:
   - attr_list             # 홈의 카드 레이아웃에 필요

@@ -1,5 +1,14 @@
 /* ===== DV STUDY 커스텀 스타일 (라이트/다크 공통) ===== */
 
+/* 다크(slate) 모드: 배경 조금 더 깊게 + 글자 더 밝게(가독성↑) */
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: #15171c;
+  --md-default-fg-color: rgba(255, 255, 255, 0.92);
+  --md-default-fg-color--light: rgba(255, 255, 255, 0.78);
+  --md-default-fg-color--lighter: rgba(255, 255, 255, 0.5);
+  --md-typeset-color: rgba(255, 255, 255, 0.92);
+}
+
 /* 본문 가독성: 줄간격·문단 여백 */
 .md-typeset {
   line-height: 1.75;
