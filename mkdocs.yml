@@ -65,7 +65,14 @@ nav:
   - DV:
       - dv/intro.md                 # DV 폴더를 누르면 열리는 대표(개요) 페이지
       - DV Workflow: dv/workflow.md
-      - UVM: dv/uvm.md
+      - UVM:
+          - dv/uvm/index.md
+          - uvm_queue: dv/uvm/queue.md
+          - uvm_callback: dv/uvm/callback.md
+          - uvm_RAL: dv/uvm/ral.md
+          - uvm_pool: dv/uvm/pool.md
+          - default_sequence: dv/uvm/default-sequence.md
+          - lock + grab: dv/uvm/lock-grab.md
       - SystemVerilog:
           - dv/sv/index.md
           - 인덱스 부분 선택: dv/sv/indexed-part-select.md
