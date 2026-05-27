@@ -16,7 +16,7 @@
 
     SystemVerilog 기반 표준 검증 방법론
 
--   :material-code-tags:{ .lg .middle } &nbsp; **[SystemVerilog](sv.md)**
+-   :material-code-tags:{ .lg .middle } &nbsp; **[SystemVerilog](sv/index.md)**
 
     ---
 
