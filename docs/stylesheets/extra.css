@@ -2,7 +2,7 @@
 
 /* 다크(slate) 모드: 배경 조금 더 깊게 + 글자 더 밝게(가독성↑) */
 [data-md-color-scheme="slate"] {
-  --md-default-bg-color: #15171c;
+  --md-default-bg-color: #1f2129;
   --md-default-fg-color: rgba(255, 255, 255, 0.92);
   --md-default-fg-color--light: rgba(255, 255, 255, 0.78);
   --md-default-fg-color--lighter: rgba(255, 255, 255, 0.5);
@@ -25,6 +25,18 @@
 [data-md-color-scheme="slate"] .md-nav__link--active,
 [data-md-color-scheme="slate"] .md-nav__item--active > .md-nav__link {
   color: #ffffff;
+}
+
+/* H1 대제목: 컬러 직사각형 블록(배너) 안에 흰 글자 */
+.md-typeset h1 {
+  display: block;
+  background: linear-gradient(135deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+  color: #ffffff !important;
+  font-weight: 700;
+  padding: 0.55em 0.8em;
+  border-radius: 0.6rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  margin-bottom: 1.2rem;
 }
 
 /* 본문 가독성: 줄간격·문단 여백 */
