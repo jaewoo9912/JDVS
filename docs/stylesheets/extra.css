@@ -1,0 +1,69 @@
+/* ===== DV STUDY 커스텀 스타일 (다크모드 기준) ===== */
+
+/* 강조(accent) 색상 살짝 조정 — 보라 계열 포인트 */
+:root {
+  --md-accent-fg-color: #b388ff;
+}
+
+/* 본문 가독성: 줄간격·문단 여백 */
+.md-typeset {
+  line-height: 1.75;
+}
+.md-typeset p {
+  margin: 0.7em 0;
+}
+
+/* H2 제목에 좌측 포인트 바 + 아래 구분선 */
+.md-typeset h2 {
+  padding-left: 0.6rem;
+  border-left: 4px solid var(--md-accent-fg-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.3rem;
+}
+
+/* H3 제목에 은은한 포인트 */
+.md-typeset h3 {
+  color: #d1c4ff;
+}
+
+/* 홈 카드: 둥근 모서리 + 마우스 올리면 떠오르는 효과 */
+.md-typeset .grid.cards > ul > li {
+  border-radius: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.md-typeset .grid.cards > ul > li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  border-color: var(--md-accent-fg-color);
+}
+
+/* 표: 헤더 강조 + 행 hover */
+.md-typeset table:not([class]) th {
+  background: rgba(179, 136, 255, 0.12);
+  font-weight: 600;
+}
+.md-typeset table:not([class]) tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* 인라인 코드: 살짝 보라빛 배경 */
+.md-typeset code {
+  border-radius: 0.3rem;
+}
+
+/* admonition(노트/경고 박스) 모서리 둥글게 */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 0.5rem;
+}
+
+/* 본문 링크에 은은한 밑줄 애니메이션 */
+.md-typeset a {
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.md-typeset a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
