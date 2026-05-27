@@ -1,5 +1,19 @@
 # DV 개요
 
-디자인 검증(Design Verification, DV)은 설계한 하드웨어가 의도대로 동작하는지 확인하는 과정이다.
+디자인 검증(Design Verification) 관련 학습 자료 모음입니다.
 
-> 여기에 내용을 채워가세요. (이 줄은 지워도 됩니다.)
+<div class="grid cards" markdown>
+
+-   :material-sitemap:{ .lg .middle } &nbsp; **[DV Workflow](workflow.md)**
+
+    ---
+
+    설계와 DV가 함께 진행하는 검증 전체 흐름
+
+-   :material-chip:{ .lg .middle } &nbsp; **[UVM](uvm.md)**
+
+    ---
+
+    SystemVerilog 기반 표준 검증 방법론
+
+</div>
