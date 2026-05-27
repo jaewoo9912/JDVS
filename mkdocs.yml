@@ -4,18 +4,52 @@ site_name: DV STUDY
 theme:
   name: material
   language: ko
+  features:
+    - navigation.tabs       # 상단에 대주제를 탭으로 표시
+    - navigation.sections   # 사이드바에 섹션 펼침
+    - navigation.top        # 맨 위로 버튼
+    - content.code.copy     # 코드 복사 버튼
+    - search.suggest
+    - search.highlight
   palette:
     - scheme: default
       primary: indigo
+      accent: indigo
       toggle:
         icon: material/weather-night
         name: 다크 모드로
     - scheme: slate
       primary: indigo
+      accent: indigo
       toggle:
         icon: material/weather-sunny
         name: 라이트 모드로
 
+markdown_extensions:
+  - attr_list             # 홈의 카드 레이아웃에 필요
+  - md_in_html            # 홈의 카드 레이아웃에 필요
+  - admonition            # 노트/경고 박스 (!!! note)
+  - pymdownx.details
+  - pymdownx.superfences  # 코드블록 강화
+  - pymdownx.highlight
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search:
+      lang: ko
+
+# 메뉴(목차) 구조. 새 글을 추가하면 여기에 등록하세요.
+# "이름:" (콜론만) = 묶음 카테고리 / "이름: 경로.md" = 클릭하면 가는 페이지
 nav:
   - 홈: index.md
-  - UVM: uvm.md
+  - DV:
+      - 개요: dv/intro.md
+      - UVM: dv/uvm.md
+  - 메모리 & 스토리지:
+      - 개요: memory-storage/intro.md
+      - DRAM: memory-storage/dram.md
+  - SoC & 보안:
+      - 개요: soc-security/intro.md
+      - 시큐어 부트: soc-security/secure-boot.md
