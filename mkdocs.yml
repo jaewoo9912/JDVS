@@ -45,6 +45,7 @@ plugins:
 nav:
   - 홈: index.md
   - DV:
+      - DV Workflow: dv/workflow.md
       - 개요: dv/intro.md
       - UVM: dv/uvm.md
   - 메모리 & 스토리지:
