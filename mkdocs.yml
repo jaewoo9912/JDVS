@@ -67,6 +67,7 @@ nav:
       - DV Workflow: dv/workflow.md
       - UVM:
           - dv/uvm/index.md
+          - uvm_object: dv/uvm/object.md
           - uvm_queue: dv/uvm/queue.md
           - uvm_callback: dv/uvm/callback.md
           - uvm_RAL: dv/uvm/ral.md

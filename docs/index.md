@@ -1,5 +1,9 @@
 # DV STUDY
 
+!!! quote "엔지니어의 덕목"
+    - **Abstraction / Communication**
+    - **Simulation (Execution Planning)**
+
 디자인 검증(Design Verification) 학습 노트
 
 <div class="grid cards" markdown>
