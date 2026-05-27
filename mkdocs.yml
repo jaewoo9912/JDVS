@@ -66,6 +66,7 @@ nav:
       - dv/intro.md                 # DV 폴더를 누르면 열리는 대표(개요) 페이지
       - DV Workflow: dv/workflow.md
       - UVM: dv/uvm.md
+      - SystemVerilog: dv/sv.md
   - 메모리 & 스토리지:
       - memory-storage/intro.md
       - DRAM: memory-storage/dram.md

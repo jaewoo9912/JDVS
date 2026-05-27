@@ -16,4 +16,10 @@
 
     SystemVerilog 기반 표준 검증 방법론
 
+-   :material-code-tags:{ .lg .middle } &nbsp; **[SystemVerilog](sv.md)**
+
+    ---
+
+    하드웨어 설계·검증 통합 언어 (HDL/HVL)
+
 </div>
