@@ -77,6 +77,11 @@ nav:
       - SystemVerilog:
           - dv/sv/index.md
           - 인덱스 부분 선택: dv/sv/indexed-part-select.md
+          - thread (fork-join): dv/sv/fork-join.md
+          - randomization (제약 랜덤화): dv/sv/randomization.md
+          - virtual interface: dv/sv/virtual-interface.md
+          - virtual method/class: dv/sv/virtual.md
+          - static / automatic (변수 lifetime): dv/sv/static-automatic.md
   - 메모리 & 스토리지:
       - memory-storage/intro.md
       - DRAM: memory-storage/dram.md
