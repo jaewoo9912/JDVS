@@ -78,7 +78,14 @@ nav:
           - dv/sv/index.md
           - 인덱스 부분 선택: dv/sv/indexed-part-select.md
           - thread (fork-join): dv/sv/fork-join.md
-          - randomization (제약 랜덤화): dv/sv/randomization.md
+          - randomization (제약 랜덤화):
+              - dv/sv/randomization/index.md
+              - 기본 (rand / randomize / randc): dv/sv/randomization/basics.md
+              - 솔버 멘탈 모델 & solve before: dv/sv/randomization/solver.md
+              - Constraint Expression: dv/sv/randomization/expression.md
+              - inline with & soft & std: dv/sv/randomization/with-soft.md
+              - 동적 제어 (rand_mode / pre·post): dv/sv/randomization/dynamic.md
+              - 분포 제어 (dist / randcase): dv/sv/randomization/distribution.md
           - virtual interface + class: dv/sv/virtual-interface.md
           - virtual method/class: dv/sv/virtual.md
           - static / automatic (변수 lifetime): dv/sv/static-automatic.md
