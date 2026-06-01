@@ -13,3 +13,4 @@ UVM(Universal Verification Methodology)은 SystemVerilog 기반의 표준 검증
 - [uvm_pool](pool.md)
 - [default_sequence](default-sequence.md)
 - [lock + grab](lock-grab.md)
+- [begin_tr / end_tr (Transaction Recording)](begin-end-tr/index.md)

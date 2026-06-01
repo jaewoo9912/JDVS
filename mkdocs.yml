@@ -74,7 +74,12 @@ nav:
           - uvm_pool: dv/uvm/pool.md
           - default_sequence: dv/uvm/default-sequence.md
           - lock + grab: dv/uvm/lock-grab.md
-          - begin_tr / end_tr (recording): dv/uvm/begin-end-tr.md
+          - begin_tr / end_tr (recording):
+              - dv/uvm/begin-end-tr/index.md
+              - 개요 (recording이란): dv/uvm/begin-end-tr/overview.md
+              - 상속 관계 (누구 것인가): dv/uvm/begin-end-tr/inheritance.md
+              - 어디서 호출 (driver vs monitor): dv/uvm/begin-end-tr/driver-monitor.md
+              - accept_tr & 3단계 생명주기: dv/uvm/begin-end-tr/accept-tr.md
       - SystemVerilog:
           - dv/sv/index.md
           - 인덱스 부분 선택: dv/sv/indexed-part-select.md
