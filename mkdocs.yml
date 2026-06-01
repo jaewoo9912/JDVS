@@ -74,6 +74,7 @@ nav:
           - uvm_pool: dv/uvm/pool.md
           - default_sequence: dv/uvm/default-sequence.md
           - lock + grab: dv/uvm/lock-grab.md
+          - begin_tr / end_tr (recording): dv/uvm/begin-end-tr.md
       - SystemVerilog:
           - dv/sv/index.md
           - 인덱스 부분 선택: dv/sv/indexed-part-select.md
