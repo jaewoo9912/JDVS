@@ -10,3 +10,4 @@
 - [`begin_tr`는 누구 것인가 — 상속 관계](inheritance.md)
 - [어디서 호출하는가 — driver vs monitor](driver-monitor.md)
 - [`accept_tr`와 트랜잭션 3단계 생명주기](accept-tr.md)
+- [(Advanced) 두 개의 API 층과 latency 측정](advanced.md)

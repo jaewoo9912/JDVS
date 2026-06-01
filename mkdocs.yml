@@ -80,6 +80,7 @@ nav:
               - 상속 관계 (누구 것인가): dv/uvm/begin-end-tr/inheritance.md
               - 어디서 호출 (driver vs monitor): dv/uvm/begin-end-tr/driver-monitor.md
               - accept_tr & 3단계 생명주기: dv/uvm/begin-end-tr/accept-tr.md
+              - (Advanced) 두 API 층 & latency 측정: dv/uvm/begin-end-tr/advanced.md
       - SystemVerilog:
           - dv/sv/index.md
           - 인덱스 부분 선택: dv/sv/indexed-part-select.md
