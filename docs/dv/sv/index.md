@@ -12,3 +12,4 @@ SystemVerilog(SV)는 하드웨어 설계와 검증에 모두 쓰이는 HDL/HVL �
 - [virtual interface + class](virtual-interface.md)
 - [virtual method/class](virtual.md)
 - [static / automatic (변수 lifetime)](static-automatic.md)
+- [assertion (SVA — SystemVerilog Assertions)](assertion.md)

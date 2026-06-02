@@ -12,6 +12,6 @@
 
 -   :material-memory:{ .lg .middle } &nbsp; **[메모리 & 스토리지](memory-storage/intro.md)**
 
--   :material-shield-lock-outline:{ .lg .middle } &nbsp; **[SoC & 보안](soc-security/intro.md)**
+-   :material-chip:{ .lg .middle } &nbsp; **[SOC](soc/index.md)**
 
 </div>

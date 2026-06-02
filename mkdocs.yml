@@ -96,9 +96,12 @@ nav:
           - virtual interface + class: dv/sv/virtual-interface.md
           - virtual method/class: dv/sv/virtual.md
           - static / automatic (변수 lifetime): dv/sv/static-automatic.md
+          - assertion (SVA): dv/sv/assertion.md
   - 메모리 & 스토리지:
       - memory-storage/intro.md
       - DRAM: memory-storage/dram.md
-  - SoC & 보안:
-      - soc-security/intro.md
-      - 시큐어 부트: soc-security/secure-boot.md
+  - SOC:
+      - soc/index.md
+      - SoC Top Integration: soc/top-integration.md
+      - Common Task & CCTV: soc/common-task-cctv.md
+      - 시큐어 부트: soc/secure-boot.md
