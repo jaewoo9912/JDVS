@@ -65,7 +65,8 @@ nav:
   - DV:
       - dv/intro.md                 # DV 폴더를 누르면 열리는 대표(개요) 페이지
       - DV Workflow: dv/workflow.md
-      - OOP: dv/oop/index.md
+      - OOP:
+          - dv/oop/index.md
       - UVM:
           - dv/uvm/index.md
           - uvm_object: dv/uvm/object.md

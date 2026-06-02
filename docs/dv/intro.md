@@ -22,4 +22,10 @@
 
     하드웨어 설계·검증 통합 언어 (HDL/HVL)
 
+-   :material-cube-outline:{ .lg .middle } &nbsp; **[OOP](oop/index.md)**
+
+    ---
+
+    객체지향(class·상속·다형성) — 검증 관점 🚧 준비 중
+
 </div>
