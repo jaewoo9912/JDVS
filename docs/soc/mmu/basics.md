@@ -71,30 +71,100 @@ VA[11:0]  = Offset (12-bit) → PPN에 그대로 concatenate
 
 ## 5. 단계별 변환 흐름 (Worked Example)
 
-프로세스 A(`ASID=5`, `TTBR0_EL1=0x8000_0000`)가 VA `0x4000_1234`를 read할 때:
+> 프로세스 A (`ASID=5`, `TTBR0_EL1=0x8000_0000`)가 VA `0x4000_1234`를 read하는 전체 흐름.
+
+### 전체 플로우
+
+```mermaid
+flowchart TD
+    START([VA 0x4000_1234 접근]) --> TLB{① TLB Lookup<br/>ASID=5, VPN}
+    TLB -->|Hit ⚡| FAST[1-cycle 반환<br/>PA + 권한 + 속성]
+    TLB -->|Miss| WALK[② Page Walk<br/>L0 → L1 → L2 → L3]
+    WALK --> PERM{③ Permission Check<br/>AP / UXN / PXN / AF}
+    PERM -->|위반| FAULT[Permission Fault<br/>→ OS 처리]
+    PERM -->|OK| PA[④ PA Synthesis<br/>PPN << 12 | offset]
+    PA --> FILL[⑤ TLB Fill<br/>결과 캐시]
+    FILL --> MEM[⑥ Memory Access<br/>DRAM read @ PA]
+    FAST --> MEM
+```
+
+### 단계별 설명
+
+#### ① TLB Lookup — "북마크 먼저 확인"
+
+`(ASID=5, VPN)`을 키로 TLB를 조회한다. 가장 먼저, 가장 빠른 경로.
+
+- **Hit**: 변환 결과가 캐시에 있음 → **1 cycle(~0.5ns)** 만에 `PA + 권한 + 속성` 반환. 이후 단계 전부 건너뜀.
+- **Miss**: 캐시에 없음 → ②번 Page Walk로 진행.
+
+!!! tip
+    ASID로 프로세스를 구분하므로, 다른 프로세스가 같은 VA를 써도 충돌하지 않는다.
+
+#### ② Page Walk — "주소록을 단계별로 뒤짐" (TLB miss일 때만)
+
+메모리에 있는 page table을 L0→L1→L2→L3 4단계로 순회한다. 각 단계에서 VA의 해당 비트로 인덱스를 만들어 다음 표의 주소를 얻는다.
 
 ```text
-① TLB Lookup   (ASID=5, VPN) 확인
-                hit  → 1-cycle에 PA + 권한 + 속성 반환
-                miss → ②로
-
-② Page Walk    L0 → L1 → L2 → L3 순회
-   L0: TTBR0   + (VA[47:39] × 8) → PTE (valid, 다음 레벨)
-   L1: L1_base + (VA[38:30] × 8) → PTE (valid, 다음 레벨)
-   L2: L2_base + (VA[29:21] × 8) → PTE (valid, 다음 레벨)
-   L3: L3_base + (VA[20:12] × 8) → PTE (page descriptor, AP=01, AF=1)
-
-③ Permission Check
-   AP[7:6] (RO vs RW) / UXN·PXN (Execute Never) / AF
-
-④ PA Synthesis
-   PA = PTE.OutputAddr[47:12] << 12 | VA[11:0]
-      = 0x9_2000 | 0x234 = 0x9_2234
-
-⑤ TLB Fill     결과 캐시 (ASID, VPN, PPN, 권한, 속성, page size)
-
-⑥ Memory Access  PA에서 속성(예: Write-Back cacheable)에 따라 DRAM read
+L0: TTBR0   + VA[47:39] × 8 → PTE (다음 레벨 지시)
+L1: L1_base + VA[38:30] × 8 → PTE (다음 레벨 지시)
+L2: L2_base + VA[29:21] × 8 → PTE (다음 레벨 지시)
+L3: L3_base + VA[20:12] × 8 → PTE (page descriptor, AP=01, AF=1)
 ```
+
+- 메모리를 최대 **4번** 읽으므로 **~400ns** 소요 (TLB hit보다 ~800× 느림).
+- 중간 PTE가 `V=0`이면 → **Translation Fault** → OS가 demand paging 처리.
+
+#### ③ Permission Check — "접근해도 되는지 검사"
+
+찾은 PTE의 권한 비트로 현재 접근(load/store/execute)이 허용되는지 확인한다.
+
+| 비트 | 검사 내용 |
+|---|---|
+| `AP[7:6]` | 읽기전용(RO) vs 읽기쓰기(RW), EL0/EL1 권한 레벨 |
+| `UXN` / `PXN` | User/Privileged에서 실행 금지 여부 |
+| `AF` | 한 번도 접근 안 됨(0)이면 fault (HW auto-set 없을 때) |
+
+- **위반** → Permission Fault → OS 처리(Segfault 또는 Copy-on-Write).
+- **OK** → ④번으로.
+
+#### ④ PA Synthesis — "최종 물리주소 조립"
+
+찾은 물리 페이지 번호(PPN)에 변환되지 않은 offset을 그대로 붙인다.
+
+```text
+PA = PTE.OutputAddr[47:12] << 12 | VA[11:0]
+   = 0x9_2000              | 0x234
+   = 0x9_2234
+```
+
+!!! note "불변식"
+    `VA[11:0]` offset은 변환을 거치지 않고 PA 하위 비트에 그대로 들어간다. → 같은 페이지 안 주소들은 변환을 공유하되 byte 위치는 유지된다.
+
+#### ⑤ TLB Fill — "다음을 위해 북마크 추가"
+
+이번에 계산한 결과를 TLB에 저장한다. 저장하는 건 PA만이 아니다.
+
+```text
+캐시 내용: (ASID, VPN, PPN, 권한, 속성, page size)
+```
+
+→ 다음에 같은 VA를 접근하면 ①에서 바로 Hit → 1 cycle.
+
+#### ⑥ Memory Access — "진짜 메모리 읽기"
+
+최종 PA로 DRAM에 접근한다. 이때 PTE의 속성(예: Write-Back cacheable)에 따라 캐시 동작이 결정된다.
+
+```text
+DRAM read @ PA = 0x9_2234  (Write-Back cacheable)
+```
+
+### 핵심 요약
+
+!!! abstract "한눈에"
+    - **Offset은 변환되지 않는다** — VA[11:0]이 PA에 그대로.
+    - **TLB hit이면 ②~⑤를 건너뛴다** — 1 cycle vs ~400ns (~800× 차이).
+    - **TLB는 (PA, 권한, 속성)을 통째로 캐시** — 그래서 page table 변경 시 TLBI 필수.
+    - **Fault는 두 종류** — Translation(②, 매핑 없음) / Permission(③, 권한 위반).
 
 ---
 
@@ -156,14 +226,103 @@ PTE의 `AttrIdx[4:2]`가 `MAIR_EL1`의 8개 slot을 인덱싱한다.
 
 ## 10. Page Fault 종류 & 처리
 
+> Page Fault = VA→PA 변환 중 문제가 생겨 정상 접근이 불가능한 상황. 종류에 따라 OS의 대응이 다르다.
+
+### 발생 위치
+
+```mermaid
+flowchart TD
+    WALK[Page Walk: L0 → L3] --> VCHK{PTE.V = 1?}
+    VCHK -->|V=0| TF[Translation Fault<br/>매핑 없음]
+    VCHK -->|V=1| AFCHK{AF = 1?}
+    AFCHK -->|AF=0| AFF[Access Flag Fault<br/>첫 접근]
+    AFCHK -->|AF=1| PCHK{권한 OK?<br/>AP / UXN / PXN}
+    PCHK -->|위반| PF[Permission Fault<br/>RO에 write 등]
+    PCHK -->|OK| OK([정상 접근])
+
+    TF --> H1[OS: 페이지 할당 → 매핑 설치 → 재시도]
+    AFF --> H2[OS/HW: AF=1 설정 → 재시도]
+    PF --> H3[OS: Segfault 또는 Copy-on-Write]
+```
+
+### 세 가지 Fault 종류
+
 | 종류 | 원인 | OS 대응 |
 |---|---|---|
-| Translation fault | `PTE.V = 0` | 페이지 할당, 매핑 설치, 재시도 |
-| Permission fault | AP mismatch (RO에 write) | Segmentation fault 또는 Copy-on-Write |
-| Access Flag fault | `AF = 0` | `AF = 1`로 업데이트 후 재시도 (SW-managed면) |
+| **Translation Fault** | `PTE.V = 0` (매핑 없음) | 페이지 할당, 매핑 설치, 재시도 |
+| **Permission Fault** | AP mismatch (RO에 write 등) | Segmentation fault 또는 Copy-on-Write |
+| **Access Flag Fault** | `AF = 0` (한 번도 접근 안 됨) | `AF = 1`로 업데이트 후 재시도 (SW-managed인 경우) |
 
-!!! info "fault handler 필수 시퀀스"
-    PTE 수정 후 반드시 **TLBI** → **DSB ISH** → **ISB** 순으로 발행해, 새 변환이 전역적으로 보이게 한 뒤 재시도.
+### 단계별 설명
+
+#### ① Translation Fault — "주소록에 항목이 없음"
+
+Page walk 도중 PTE의 **Valid 비트가 0**이면, 해당 VA는 아직 물리 메모리에 매핑되지 않은 것이다.
+
+- **언제**: 처음 접근하는 페이지, 또는 디스크로 swap-out된 페이지.
+- **OS 대응**:
+  ```text
+  1. 물리 페이지 할당 (또는 디스크에서 swap-in)
+  2. PTE에 매핑 설치 (V=1, PPN, 권한 설정)
+  3. 폴트 난 명령 재시도(retry)
+  ```
+- 이것이 **demand paging**(필요할 때 페이지 할당)의 핵심 메커니즘.
+
+#### ② Permission Fault — "권한이 없음"
+
+매핑은 있지만(`V=1`), 시도한 접근이 PTE 권한과 맞지 않는다.
+
+- **예시**: 읽기전용(RO) 페이지에 write 시도, 또는 실행 금지(UXN/PXN) 영역에서 코드 실행.
+- **OS 대응**:
+    - 진짜 위반이면 → **Segmentation Fault** (프로세스 종료).
+    - **Copy-on-Write(CoW)** 상황이면 → 새 페이지 복사 후 RW로 바꿔주고 재시도.
+
+!!! note "CoW 예시 (fork)"
+    ```text
+    fork() 후 부모·자식이 같은 물리 페이지를 RO로 공유
+    → 자식이 write 시도 → Permission Fault
+    → OS: 새 페이지 할당 + 내용 복사 + 자식 PTE를 RW로 변경
+    → TLBI로 자식 TLB 무효화 → 명령 재시도
+    ```
+
+#### ③ Access Flag Fault — "한 번도 접근된 적 없음"
+
+PTE의 **Access Flag(AF)가 0**이면, 그 페이지가 한 번도 접근되지 않았다는 의미다.
+
+- **용도**: OS가 "어떤 페이지가 실제로 쓰이는지" 추적(페이지 교체 정책에 사용).
+- **대응**:
+    - HW가 `FEAT_HAFDBS`를 지원하면 → **하드웨어가 자동으로 AF=1** 설정.
+    - 미지원이면 → **OS 핸들러가 명시적으로 AF=1** 설정 후 재시도.
+
+!!! danger "실전 함정 — 무한 Fault 루프"
+    PTE를 `AF=0`으로 초기화했는데 HW가 auto-set을 안 하고(`FEAT_HAFDBS` 없음), OS 핸들러도 AF 설정을 빠뜨리면 → **모든 접근이 계속 fault** → 무한 루프 또는 심각한 성능 저하.
+
+### Fault Handler의 필수 마무리: TLBI + 배리어
+
+어떤 fault든 핸들러가 PTE를 수정했다면, **반드시 TLB를 무효화**해야 한다. 안 그러면 낡은 TLB entry가 살아남아 재시도해도 옛날 값으로 또 fault 나거나 잘못된 PA를 쓴다.
+
+```text
+PTE 수정
+   ↓
+TLBI VAE1, Xt   ← 해당 VA의 낡은 TLB entry 무효화
+   ↓
+DSB ISH         ← 모든 코어에 반영 완료될 때까지 대기
+   ↓
+ISB             ← 파이프라인 정리
+   ↓
+ERET            ← 폴트 난 명령으로 복귀(재시도)
+```
+
+!!! warning "TLBI 누락 = 무한 루프"
+    Page fault handler가 PTE만 업데이트하고 **TLBI를 건너뛰면**, 재시도 시 TLB의 낡은 entry(V=0 또는 옛 권한)를 다시 읽어 → **같은 fault가 무한 반복**된다.
+
+### 핵심 요약
+
+!!! abstract "한눈에"
+    - Fault는 **검사 순서**대로 갈린다: `V=0`(Translation) → `AF=0`(Access Flag) → 권한 위반(Permission).
+    - **Translation Fault** = demand paging의 정상 동작(에러 아님).
+    - **Permission Fault** = 진짜 위반(Segfault) 또는 CoW 트리거.
+    - 핸들러가 PTE를 고쳤으면 **TLBI → DSB ISH → ISB**가 필수 (누락 시 무한 루프).
 
 ---
 
