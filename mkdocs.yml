@@ -65,6 +65,7 @@ nav:
   - DV:
       - dv/intro.md                 # DV 폴더를 누르면 열리는 대표(개요) 페이지
       - DV Workflow: dv/workflow.md
+      - OOP: dv/oop/index.md
       - UVM:
           - dv/uvm/index.md
           - uvm_object: dv/uvm/object.md
@@ -102,13 +103,17 @@ nav:
       - DRAM: memory-storage/dram.md
   - SOC:
       - soc/index.md
-      - SoC CCTV:
-          - soc/cctv/index.md
-          - 1. SoC Top Integration: soc/cctv/top-integration.md
-          - 2. Common Task & CCTV: soc/cctv/common-task-cctv.md
-      - MMU:
-          - soc/mmu/index.md
-          - 1. 기본 개념 및 주소 변환: soc/mmu/basics.md
-          - 2. Page Table Structure: soc/mmu/page-table.md
-          - 3. TLB (Translation Lookaside Buffer): soc/mmu/tlb.md
+      - SoC CCTV: soc/cctv/index.md
+      - MMU: soc/mmu/index.md
       - 시큐어 부트: soc/secure-boot.md
+  - School:
+      - school/index.md
+      - SoC CCTV:
+          - school/cctv/index.md
+          - 1. SoC Top Integration: school/cctv/top-integration.md
+          - 2. Common Task & CCTV: school/cctv/common-task-cctv.md
+      - MMU:
+          - school/mmu/index.md
+          - 1. 기본 개념 및 주소 변환: school/mmu/basics.md
+          - 2. Page Table Structure: school/mmu/page-table.md
+          - 3. TLB (Translation Lookaside Buffer): school/mmu/tlb.md
