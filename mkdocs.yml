@@ -102,6 +102,13 @@ nav:
       - DRAM: memory-storage/dram.md
   - SOC:
       - soc/index.md
-      - SoC Top Integration: soc/top-integration.md
-      - Common Task & CCTV: soc/common-task-cctv.md
+      - SoC CCTV:
+          - soc/cctv/index.md
+          - 1. SoC Top Integration: soc/cctv/top-integration.md
+          - 2. Common Task & CCTV: soc/cctv/common-task-cctv.md
+      - MMU:
+          - soc/mmu/index.md
+          - 1. 기본 개념 및 주소 변환: soc/mmu/basics.md
+          - 2. Page Table Structure: soc/mmu/page-table.md
+          - 3. TLB (Translation Lookaside Buffer): soc/mmu/tlb.md
       - 시큐어 부트: soc/secure-boot.md
