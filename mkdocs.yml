@@ -105,7 +105,10 @@ nav:
   - SOC:
       - soc/index.md
       - SoC CCTV: soc/cctv/index.md
-      - MMU: soc/mmu/index.md
+      - MMU:
+          - soc/mmu/index.md
+          - Unit 1 — 왜 MMU가 필요한가?: soc/mmu/unit1-why-mmu.md
+          - Unit 2 — 페이지와 페이지 테이블: soc/mmu/unit2-page-table.md
       - 시큐어 부트: soc/secure-boot.md
   - School:
       - school/index.md
