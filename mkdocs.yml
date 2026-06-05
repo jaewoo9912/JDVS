@@ -116,6 +116,7 @@ nav:
               - Unit 5 — 보호와 무효화: soc/mmu/beginner/unit5-protection-invalidation.md
           - 중수 (Intermediate):
               - soc/mmu/intermediate/index.md
+              - 심화 Unit 1 — TLB 마이크로아키텍처: soc/mmu/intermediate/unit1-tlb-microarch.md
           - 고수 (Advanced):
               - soc/mmu/advanced/index.md
       - 시큐어 부트: soc/secure-boot.md
