@@ -14,4 +14,6 @@
 
 -   :material-chip:{ .lg .middle } &nbsp; **[SOC](soc/index.md)**
 
+-   :material-cpu-64-bit:{ .lg .middle } &nbsp; **[컴퓨터 구조](computer-architecture/index.md)**
+
 </div>

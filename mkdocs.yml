@@ -102,6 +102,12 @@ nav:
   - 메모리 & 스토리지:
       - memory-storage/intro.md
       - DRAM: memory-storage/dram.md
+  - 컴퓨터 구조:
+      - computer-architecture/index.md
+      - Unit 1 — 왜 컴퓨터 구조를 배우는가: computer-architecture/unit1-why-comparch.md
+      - Unit 2 — 게이트 → ALU: computer-architecture/unit2-gates-alu.md
+      - Unit 3 — 수의 표현 & 산술: computer-architecture/unit3-number-representation.md
+      - Unit 4 — 메모리와 레지스터: computer-architecture/unit4-memory-registers.md
   - SOC:
       - soc/index.md
       - SoC CCTV: soc/cctv/index.md
