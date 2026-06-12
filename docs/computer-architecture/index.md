@@ -39,14 +39,14 @@ flowchart TD
 | 2 | [게이트 → ALU](unit2-gates-alu.md) ✅ | 트랜지스터 몇 개가 어떻게 "덧셈"이 되나? |
 | 3 | [수의 표현 & 산술 (2의 보수, 부동소수점, 오버플로)](unit3-number-representation.md) ✅ | 음수·소수를 0과 1로 어떻게 표현하고, 왜 0.1+0.2≠0.3인가? |
 | 4 | [메모리와 레지스터](unit4-memory-registers.md) ✅ | 레지스터·메모리는 왜 나뉘고, 데이터는 어디에 사는가? |
-| 5 | 명령 한 줄의 일생 (fetch→decode→execute→mem→writeback) | `add x1,x2,x3` 한 줄이 실행되며 칩 안에서 무슨 일이 일어나나? |
-| 6 | '빠르다'를 재는 법 (latency vs throughput, CPI, Iron Law) | "빠른 CPU"란 정확히 뭘 말하나? 클럭? IPC? 무엇으로 재나? |
+| 5 | [명령 한 줄의 일생 (fetch→decode→execute→mem→writeback)](unit5-instruction-lifecycle.md) ✅ | `add x1,x2,x3` 한 줄이 실행되며 칩 안에서 무슨 일이 일어나나? |
+| 6 | ['빠르다'를 재는 법 (latency vs throughput, CPI, Iron Law)](unit6-performance-measurement.md) ✅ | "빠른 CPU"란 정확히 뭘 말하나? 클럭? IPC? 무엇으로 재나? |
 
 ### 명령어 집합
 
 | # | 단원 | 핵심 질문 |
 |---|---|---|
-| 7 | ISA & RISC-V | 하드웨어와 소프트웨어의 계약(ISA)이란? 왜 RISC-V가 깔끔한가? |
+| 7 | [ISA & RISC-V](unit7-isa-riscv.md) ✅ | 하드웨어와 소프트웨어의 계약(ISA)이란? 왜 RISC-V가 깔끔한가? |
 
 ### ILP — 한 코어를 빠르게
 

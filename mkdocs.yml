@@ -108,6 +108,9 @@ nav:
       - Unit 2 — 게이트 → ALU: computer-architecture/unit2-gates-alu.md
       - Unit 3 — 수의 표현 & 산술: computer-architecture/unit3-number-representation.md
       - Unit 4 — 메모리와 레지스터: computer-architecture/unit4-memory-registers.md
+      - Unit 5 — 명령 한 줄의 일생: computer-architecture/unit5-instruction-lifecycle.md
+      - Unit 6 — '빠르다'를 재는 법: computer-architecture/unit6-performance-measurement.md
+      - Unit 7 — ISA & RISC-V: computer-architecture/unit7-isa-riscv.md
   - SOC:
       - soc/index.md
       - SoC CCTV: soc/cctv/index.md
