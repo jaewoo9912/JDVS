@@ -52,7 +52,7 @@ flowchart TD
 
 | # | 단원 | 핵심 질문 |
 |---|---|---|
-| 8 | 5-stage pipeline & hazard | 명령을 겹쳐 실행하면 왜 빨라지고, 무엇이 그걸 방해(hazard)하나? |
+| 8 | [5-stage pipeline & hazard](unit8-pipeline-hazard.md) ✅ | 명령을 겹쳐 실행하면 왜 빨라지고, 무엇이 그걸 방해(hazard)하나? |
 | 9 | 분기 예측 & speculation | "if문 결과를 모르는데" 어떻게 멈추지 않고 미리 달리나? |
 | 10 | Tomasulo & ROB (동적 스케줄링·레지스터 리네이밍·OoO·superscalar) | 순서를 바꿔 실행하면서도 결과는 어떻게 순서대로 맞추나? ILP는 왜 한계에 부딪히나? |
 
