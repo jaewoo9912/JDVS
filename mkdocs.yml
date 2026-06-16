@@ -112,6 +112,7 @@ nav:
       - Unit 6 — '빠르다'를 재는 법: computer-architecture/unit6-performance-measurement.md
       - Unit 7 — ISA & RISC-V: computer-architecture/unit7-isa-riscv.md
       - Unit 8 — 5-stage pipeline & hazard: computer-architecture/unit8-pipeline-hazard.md
+      - Unit 9 — 분기 예측 & speculation: computer-architecture/unit9-branch-prediction-speculation.md
   - SOC:
       - soc/index.md
       - SoC CCTV: soc/cctv/index.md
