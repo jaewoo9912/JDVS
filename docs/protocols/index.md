@@ -12,3 +12,5 @@
 - **AMBA** (ARM의 SoC 온칩 버스 표준 — APB / AHB / AXI / ACE / CHI)
     - [Unit 1 — APB & AHB (AMBA의 두 클래식 버스)](amba/amba-unit1-apb-ahb.md) ✅
     - [Unit 1 — APB & AHB : Q&A 모음](amba/amba-unit1-qa.md) ✅
+    - [Unit 2 — AXI (그 벽을 깨는 버스)](amba/amba-unit2-axi.md) ✅
+    - [Unit 2 — AXI : Q&A 모음](amba/amba-unit2-qa.md) ✅
