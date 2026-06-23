@@ -113,6 +113,11 @@ nav:
       - Unit 7 — ISA & RISC-V: computer-architecture/unit7-isa-riscv.md
       - Unit 8 — 5-stage pipeline & hazard: computer-architecture/unit8-pipeline-hazard.md
       - Unit 9 — 분기 예측 & speculation: computer-architecture/unit9-branch-prediction-speculation.md
+  - 프로토콜:
+      - protocols/index.md
+      - AMBA:
+          - Unit 1 — APB & AHB: protocols/amba/amba-unit1-apb-ahb.md
+          - Unit 1 — APB & AHB Q&A: protocols/amba/amba-unit1-qa.md
   - SOC:
       - soc/index.md
       - SoC CCTV: soc/cctv/index.md
