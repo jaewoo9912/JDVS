@@ -120,6 +120,8 @@ nav:
           - Unit 1 — APB & AHB Q&A: protocols/amba/amba-unit1-qa.md
           - Unit 2 — AXI: protocols/amba/amba-unit2-axi.md
           - Unit 2 — AXI Q&A: protocols/amba/amba-unit2-qa.md
+          - Unit 3 — AXI-Stream: protocols/amba/amba-unit3-axi-stream.md
+          - Unit 3 — AXI-Stream Q&A: protocols/amba/amba-unit3-qa.md
   - SOC:
       - soc/index.md
       - SoC CCTV: soc/cctv/index.md

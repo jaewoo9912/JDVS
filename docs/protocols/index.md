@@ -14,3 +14,5 @@
     - [Unit 1 — APB & AHB : Q&A 모음](amba/amba-unit1-qa.md) ✅
     - [Unit 2 — AXI (그 벽을 깨는 버스)](amba/amba-unit2-axi.md) ✅
     - [Unit 2 — AXI : Q&A 모음](amba/amba-unit2-qa.md) ✅
+    - [Unit 3 — AXI-Stream (주소를 버린 버스)](amba/amba-unit3-axi-stream.md) ✅
+    - [Unit 3 — AXI-Stream : Q&A 모음](amba/amba-unit3-qa.md) ✅
