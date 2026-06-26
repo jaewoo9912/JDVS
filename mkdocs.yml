@@ -69,6 +69,9 @@ nav:
           - dv/oop/index.md
       - UVM:
           - dv/uvm/index.md
+          - Basic Concept:
+              - dv/uvm/basic-concept/index.md
+              - UVM Intro — 왜 UVM을 배워야 하는가: dv/uvm/basic-concept/intro-why-uvm.md
           - uvm_object: dv/uvm/object.md
           - uvm_queue: dv/uvm/queue.md
           - uvm_callback: dv/uvm/callback.md
