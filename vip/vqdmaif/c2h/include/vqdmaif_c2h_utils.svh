@@ -1,0 +1,5 @@
+`ifndef __VQDMAIF_C2H_UTILS_SVH__
+`define __VQDMAIF_C2H_UTILS_SVH__
+
+
+`endif // __VQDMAIF_C2H_UTILS_SVH__

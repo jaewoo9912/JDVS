@@ -1,0 +1,5 @@
+`ifndef __VQDMAIF_C2H_MACRO_SVH__
+`define __VQDMAIF_C2H_MACRO_SVH__
+
+
+`endif // __VQDMAIF_C2H_MACRO_SVH__

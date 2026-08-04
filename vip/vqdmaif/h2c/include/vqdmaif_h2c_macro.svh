@@ -1,0 +1,5 @@
+`ifndef __VQDMAIF_H2C_MACRO_SVH__
+`define __VQDMAIF_H2C_MACRO_SVH__
+
+
+`endif // __VQDMAIF_H2C_MACRO_SVH__
