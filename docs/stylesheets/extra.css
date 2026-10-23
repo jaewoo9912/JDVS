@@ -91,3 +91,97 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* =====================================================================
+   사이드바 파일 탐색기(트리) 스타일 — 데스크톱(≥1220px) 전용
+   - 폴더(하위 항목이 있는 섹션): 📁 닫힘 / 📂 열림 아이콘 (Material SVG)
+   - 페이지(leaf): 작은 점(•) 불릿
+   - 하위 목록: 왼쪽 세로 가이드선 + 적당한 들여쓰기
+   - 현재 페이지: 강조색 pill 배경
+   모바일 드로어(슬라이드 패널)는 Material 기본 모양 그대로 둡니다.
+   ===================================================================== */
+:root {
+  --jd-folder-closed: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8z"/></svg>');
+  --jd-folder-open: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5"/></svg>');
+  --jd-folder-color: #c98a12;
+  --jd-guide-color: rgba(0, 0, 0, 0.12);
+  --jd-bullet-color: rgba(0, 0, 0, 0.32);
+  --jd-active-bg: rgba(103, 58, 183, 0.10);
+}
+[data-md-color-scheme="slate"] {
+  --jd-folder-color: #e8b547;
+  --jd-guide-color: rgba(255, 255, 255, 0.13);
+  --jd-bullet-color: rgba(255, 255, 255, 0.38);
+  --jd-active-bg: rgba(149, 117, 205, 0.20);
+}
+
+@media screen and (min-width: 76.25em) {
+  /* 항목 간 세로 간격 살짝 넓게 */
+  .md-nav--primary .md-nav__item > .md-nav__link {
+    margin-top: 0.5em;
+  }
+
+  /* --- 폴더(섹션) 항목: 굵게 + 폴더 아이콘 --- */
+  .md-nav--primary .md-nav__item--nested > label.md-nav__link,
+  .md-nav--primary .md-nav__item--nested > .md-nav__container > a.md-nav__link {
+    font-weight: 600;
+  }
+  .md-nav--primary .md-nav__item--nested > label.md-nav__link::before,
+  .md-nav--primary .md-nav__item--nested > .md-nav__container > a.md-nav__link::before {
+    content: "";
+    flex-shrink: 0;
+    width: 1.05em;
+    height: 1.05em;
+    margin-top: 0.22em;        /* 줄바꿈돼도 첫 줄 가운데에 맞춤 */
+    margin-right: -0.05rem;
+    background-color: var(--jd-folder-color);
+    -webkit-mask: var(--jd-folder-closed) center / contain no-repeat;
+            mask: var(--jd-folder-closed) center / contain no-repeat;
+  }
+  /* 열린 폴더 → 📂 */
+  .md-nav--primary .md-nav__item--nested > .md-nav__toggle:checked ~ label.md-nav__link::before,
+  .md-nav--primary .md-nav__item--nested > .md-nav__toggle:checked ~ .md-nav__container > a.md-nav__link::before {
+    -webkit-mask-image: var(--jd-folder-open);
+            mask-image: var(--jd-folder-open);
+  }
+  /* 컨테이너(인덱스 페이지 있는 폴더) 안쪽 링크가 텍스트를 꽉 채우도록 */
+  .md-nav--primary .md-nav__container > a.md-nav__link {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  /* --- 페이지(leaf) 항목: 작은 점 불릿 --- */
+  .md-nav--primary .md-nav__item:not(.md-nav__item--nested) > a.md-nav__link::before {
+    content: "";
+    flex-shrink: 0;
+    width: 0.32em;
+    height: 0.32em;
+    margin: 0.59em 0.37em 0;   /* 첫 줄 가운데 + 폴더 아이콘(1.05em)과 텍스트 시작선 맞춤 */
+    border-radius: 50%;
+    background-color: var(--jd-bullet-color);
+  }
+
+  /* --- 현재 페이지: pill 하이라이트 --- */
+  .md-nav--primary .md-nav__item > a.md-nav__link--active {
+    background-color: var(--jd-active-bg);
+    border-radius: 0.35rem;
+    padding: 0.15rem 0.4rem;
+    margin-left: -0.4rem;
+    font-weight: 600;
+  }
+  .md-nav--primary .md-nav__item > a.md-nav__link--active::before {
+    background-color: var(--md-accent-fg-color);
+  }
+
+  /* --- 하위 목록 세로 가이드선 + 들여쓰기 --- */
+  .md-nav--primary .md-nav__item--nested > .md-nav > .md-nav__list {
+    margin-left: 0.48em;
+    padding-left: 0.7em;
+    border-left: 0.05rem solid var(--jd-guide-color);
+  }
+
+  /* 본문 목차(TOC)가 사이드바에 들어가는 경우엔 트리 장식 제외 */
+  .md-nav--primary .md-nav--secondary .md-nav__link::before {
+    content: none;
+  }
+}

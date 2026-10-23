@@ -9,7 +9,6 @@ theme:
     code: JetBrains Mono    # 코드용 폰트
   features:
     - navigation.indexes        # 섹션(폴더) 자체를 대표 페이지로
-    - navigation.expand         # 사이드바 폴더를 펼친 채로 표시
     - navigation.top            # 맨 위로 버튼
     - navigation.tracking       # URL에 현재 위치 반영
     - navigation.footer         # 이전/다음 페이지 네비
