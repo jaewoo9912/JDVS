@@ -88,6 +88,7 @@ nav:
               - (Advanced) 두 API 층 & latency 측정: dv/uvm/begin-end-tr/advanced.md
       - SystemVerilog:
           - dv/sv/index.md
+          - RTL 기초 (조합/순차 논리 & = vs <=): dv/sv/comb-seq-logic.md
           - 인덱스 부분 선택: dv/sv/indexed-part-select.md
           - thread (fork-join): dv/sv/fork-join.md
           - randomization (제약 랜덤화):
