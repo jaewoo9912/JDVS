@@ -68,24 +68,28 @@ nav:
           - dv/oop/index.md
       - UVM:
           - dv/uvm/index.md
-          - Basic Concept:
-              - dv/uvm/basic-concept/index.md
-              - UVM Intro — 왜 UVM을 배워야 하는가: dv/uvm/basic-concept/intro-why-uvm.md
-          - Driver / Monitor의 = vs <=: dv/uvm/driver-monitor-blocking-nonblocking.md
-          - uvm_object: dv/uvm/object.md
-          - uvm_queue: dv/uvm/queue.md
-          - uvm_callback: dv/uvm/callback.md
-          - uvm_RAL: dv/uvm/ral.md
-          - uvm_pool: dv/uvm/pool.md
-          - default_sequence: dv/uvm/default-sequence.md
-          - lock + grab: dv/uvm/lock-grab.md
-          - begin_tr / end_tr (recording):
-              - dv/uvm/begin-end-tr/index.md
-              - 개요 (recording이란): dv/uvm/begin-end-tr/overview.md
-              - 상속 관계 (누구 것인가): dv/uvm/begin-end-tr/inheritance.md
-              - 어디서 호출 (driver vs monitor): dv/uvm/begin-end-tr/driver-monitor.md
-              - accept_tr & 3단계 생명주기: dv/uvm/begin-end-tr/accept-tr.md
-              - (Advanced) 두 API 층 & latency 측정: dv/uvm/begin-end-tr/advanced.md
+          - UVM을 왜 써야 하는가: dv/uvm/intro-why-uvm.md
+          - Study:
+              - dv/uvm/study/index.md
+          - 코드 분석:
+              - dv/uvm/code-analysis/index.md
+          - 실무 Tips:
+              - dv/uvm/tips/index.md
+              - Driver / Monitor의 = vs <=: dv/uvm/driver-monitor-blocking-nonblocking.md
+              - uvm_object: dv/uvm/object.md
+              - uvm_queue: dv/uvm/queue.md
+              - uvm_callback: dv/uvm/callback.md
+              - uvm_RAL: dv/uvm/ral.md
+              - uvm_pool: dv/uvm/pool.md
+              - default_sequence: dv/uvm/default-sequence.md
+              - lock + grab: dv/uvm/lock-grab.md
+              - begin_tr / end_tr (recording):
+                  - dv/uvm/begin-end-tr/index.md
+                  - 개요 (recording이란): dv/uvm/begin-end-tr/overview.md
+                  - 상속 관계 (누구 것인가): dv/uvm/begin-end-tr/inheritance.md
+                  - 어디서 호출 (driver vs monitor): dv/uvm/begin-end-tr/driver-monitor.md
+                  - accept_tr & 3단계 생명주기: dv/uvm/begin-end-tr/accept-tr.md
+                  - (Advanced) 두 API 층 & latency 측정: dv/uvm/begin-end-tr/advanced.md
       - SystemVerilog:
           - dv/sv/index.md
           - RTL 기초 (조합/순차 논리 & = vs <=): dv/sv/comb-seq-logic.md
