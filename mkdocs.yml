@@ -93,6 +93,8 @@ nav:
       - SystemVerilog:
           - dv/sv/index.md
           - RTL 기초 (조합/순차 논리 & = vs <=): dv/sv/comb-seq-logic.md
+          - FSM (유한 상태 머신): dv/sv/fsm.md
+          - X propagation (xprop): dv/sv/x-propagation.md
           - 인덱스 부분 선택: dv/sv/indexed-part-select.md
           - thread (fork-join): dv/sv/fork-join.md
           - randomization (제약 랜덤화):
