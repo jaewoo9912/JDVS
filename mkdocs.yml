@@ -105,10 +105,12 @@ nav:
               - inline with & soft & std: dv/sv/randomization/with-soft.md
               - 동적 제어 (rand_mode / pre·post): dv/sv/randomization/dynamic.md
               - 분포 제어 (dist / randcase): dv/sv/randomization/distribution.md
+          - 객체 복사 (Shallow vs Deep Copy): dv/sv/object-copy.md
           - virtual interface + class: dv/sv/virtual-interface.md
           - virtual method/class: dv/sv/virtual.md
           - static / automatic (변수 lifetime): dv/sv/static-automatic.md
           - assertion (SVA): dv/sv/assertion.md
+          - bind & 내부 신호(Arbiter) 검증: dv/sv/bind.md
   - 메모리 & 스토리지:
       - memory-storage/intro.md
       - DRAM: memory-storage/dram.md
