@@ -10,6 +10,12 @@
 
     설계와 DV가 함께 진행하는 검증 전체 흐름
 
+-   :material-lightbulb-on-outline:{ .lg .middle } &nbsp; **[검증 TIPS](tips/index.md)**
+
+    ---
+
+    [data-path](tips/data-path.md) · [control-path](tips/control-path.md) · [top](tips/top.md)
+
 -   :material-chip:{ .lg .middle } &nbsp; **[UVM](uvm/index.md)**
 
     ---
