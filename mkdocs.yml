@@ -71,6 +71,7 @@ nav:
           - top: dv/tips/top.md
       - OOP:
           - dv/oop/index.md
+          - "상속이 꼭 필요한 경우!": dv/oop/inheritance-vs-composition.md
       - UVM:
           - dv/uvm/index.md
           - UVM을 왜 써야 하는가: dv/uvm/intro-why-uvm.md
