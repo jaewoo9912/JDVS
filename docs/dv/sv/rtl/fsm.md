@@ -73,7 +73,7 @@ assign done_pulse = (state == DONE);
 | --- | --- | --- |
 | **① State Coverage** | 정의된 모든 상태(`IDLE`, `BUSY`, `DONE`, `ERROR` 등)를 최소 한 번씩 다 가봤는가? | Coverage (FSM State) |
 | **② Transition Coverage** | 상태 사이의 모든 화살표(정상 경로 + 취소/에외 경로)를 다 타봤는가? | Coverage (FSM Transition) |
-| **③ 불법 전이 & Deadlock 감시** | 가면 안 되는 길(예: `IDLE → DONE` 점프)로 가거나, 특정 상태에 영원히 갇히지 않는가? | [Assertion (SVA)](assertion.md) |
+| **③ 불법 전이 & Deadlock 감시** | 가면 안 되는 길(예: `IDLE → DONE` 점프)로 가거나, 특정 상태에 영원히 갇히지 않는가? | [Assertion (SVA)](../sva/index.md) |
 
 ```systemverilog
 // FSM 전이 감시 Assertion 예시: IDLE에서 start가 뜨면 다음 클럭엔 반드시 BUSY여야 한다

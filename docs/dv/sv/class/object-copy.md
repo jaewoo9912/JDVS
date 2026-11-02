@@ -59,7 +59,7 @@ b ──┴─> [큰 상자 1]                               ├──> [작은 
 | --- | --- | --- | --- | --- |
 | **핸들 복사 (Handle Assignment)** | `b = a;` | **1개 공유** | **1개 공유** | `b`의 어디를 고쳐도 `a`가 같이 바뀜 |
 | **얕은 복사 (Shallow Copy)** | `b = new a;` | **새로 생성 (2개)** | **1개 공유 ⚠️** | `b.addr = 99;`는 독립이지만, `b.sub_hdr.id = 7;`을 고치면 `a.sub_hdr.id`도 같이 바뀜 |
-| **깊은 복사 (Deep Copy)** | `b.copy(a);` 또는 `$cast(b, a.clone());` | **새로 생성 (2개)** | **새로 생성 (2개) ✅** | 겉 상자부터 속 안의 작은 상자까지 100% 남남 (UVM 표준 방식 → [`uvm_object` 상세](../uvm/object.md)) |
+| **깊은 복사 (Deep Copy)** | `b.copy(a);` 또는 `$cast(b, a.clone());` | **새로 생성 (2개)** | **새로 생성 (2개) ✅** | 겉 상자부터 속 안의 작은 상자까지 100% 남남 (UVM 표준 방식 → [`uvm_object` 상세](../../uvm/object.md)) |
 
 ```systemverilog
 // 1) Shallow Copy (SystemVerilog 기본 문법): 겉 상자만 새로 만들고 안쪽 객체 핸들은 공유

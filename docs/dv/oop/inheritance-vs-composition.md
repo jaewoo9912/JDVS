@@ -268,4 +268,4 @@ endclass
     - **상속 (is-a)** : **재사용 + 오버라이딩(다형성)** 이 둘 다 있을 때만 `extends`.
     - **interface class** : 물려줄 코드가 없고 **규격(함수 이름)만 통일**할 때 `implements`.
 
-관련 페이지: [virtual method/class](../sv/virtual.md) · [객체 복사 (Shallow vs Deep Copy)](../sv/object-copy.md)
+관련 페이지: [virtual method/class](../sv/class/virtual.md) · [객체 복사 (Shallow vs Deep Copy)](../sv/class/object-copy.md)

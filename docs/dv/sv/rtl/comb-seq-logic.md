@@ -150,7 +150,7 @@ always_ff @(posedge clk) begin
 end
 ```
 
-- 래치 vs 플립플롭 추가 참고 → [컴퓨터 구조 Unit 8 — Q4, Q5](../../computer-architecture/unit8-pipeline-hazard.md)
+- 래치 vs 플립플롭 추가 참고 → [컴퓨터 구조 Unit 8 — Q4, Q5](../../../computer-architecture/unit8-pipeline-hazard.md)
 
 ---
 
@@ -245,7 +245,7 @@ end
 !!! warning "하지 말 것"
     한 블록 안에서 `=`와 `<=`를 **섞어 쓰지 않는다**. 언제 바뀌는지 헷갈려 버그가 생기고 리뷰도 어렵다.
 
-    - UVM Driver / Monitor에서의 `=` vs `<=` 구분은 → [Driver / Monitor의 `=` vs `<=`](../uvm/driver-monitor-blocking-nonblocking.md)
+    - UVM Driver / Monitor에서의 `=` vs `<=` 구분은 → [Driver / Monitor의 `=` vs `<=`](../../uvm/driver-monitor-blocking-nonblocking.md)
 
 ---
 

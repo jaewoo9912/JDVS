@@ -83,7 +83,7 @@ foreach (port[i]) begin
 end
 ```
 
-선언만으론 부족. **`= i` 초기자가 fork 시점에 평가되는 게 핵심**이다. ([상세](fork-join.md#foreach-fork-변수-캡처-함정))
+선언만으론 부족. **`= i` 초기자가 fork 시점에 평가되는 게 핵심**이다. ([상세](../thread/fork-join.md#foreach-fork))
 
 ---
 

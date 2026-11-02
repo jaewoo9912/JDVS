@@ -98,25 +98,37 @@ nav:
                   - (Advanced) 두 API 층 & latency 측정: dv/uvm/begin-end-tr/advanced.md
       - SystemVerilog:
           - dv/sv/index.md
-          - RTL 기초 (조합/순차 논리 & = vs <=): dv/sv/comb-seq-logic.md
-          - FSM (유한 상태 머신): dv/sv/fsm.md
-          - X propagation (xprop): dv/sv/x-propagation.md
-          - 인덱스 부분 선택: dv/sv/indexed-part-select.md
-          - thread (fork-join): dv/sv/fork-join.md
-          - randomization (제약 랜덤화):
+          - 1. RTL 기초:
+              - dv/sv/rtl/index.md
+              - 조합 / 순차 논리 (= vs <=): dv/sv/rtl/comb-seq-logic.md
+              - FSM (유한 상태 머신): dv/sv/rtl/fsm.md
+              - X propagation (xprop): dv/sv/rtl/x-propagation.md
+          - 2. 문법 & 데이터 타입:
+              - dv/sv/syntax/index.md
+              - 인덱스 부분 선택: dv/sv/syntax/indexed-part-select.md
+              - static / automatic: dv/sv/syntax/static-automatic.md
+          - 3. Class:
+              - dv/sv/class/index.md
+              - virtual method / class: dv/sv/class/virtual.md
+              - 객체 복사 (Shallow vs Deep): dv/sv/class/object-copy.md
+              - virtual class / interface: dv/sv/class/virtual-interface.md
+          - 4. Thread & 동기화:
+              - dv/sv/thread/index.md
+              - fork-join: dv/sv/thread/fork-join.md
+          - 5. Randomization:
               - dv/sv/randomization/index.md
-              - 기본 (rand / randomize / randc): dv/sv/randomization/basics.md
-              - 솔버 멘탈 모델 & solve before: dv/sv/randomization/solver.md
+              - 기본 (rand / randc): dv/sv/randomization/basics.md
+              - 솔버 & solve before: dv/sv/randomization/solver.md
               - Constraint Expression: dv/sv/randomization/expression.md
-              - inline with & soft & std: dv/sv/randomization/with-soft.md
-              - 동적 제어 (rand_mode / pre·post): dv/sv/randomization/dynamic.md
+              - inline with & soft: dv/sv/randomization/with-soft.md
+              - 동적 제어 (rand_mode): dv/sv/randomization/dynamic.md
               - 분포 제어 (dist / randcase): dv/sv/randomization/distribution.md
-          - 객체 복사 (Shallow vs Deep Copy): dv/sv/object-copy.md
-          - virtual interface + class: dv/sv/virtual-interface.md
-          - virtual method/class: dv/sv/virtual.md
-          - static / automatic (변수 lifetime): dv/sv/static-automatic.md
-          - assertion (SVA): dv/sv/assertion.md
-          - bind & 내부 신호(Arbiter) 검증: dv/sv/bind.md
+          - 6. Assertion (SVA):
+              - dv/sv/sva/index.md
+              - 기본 (Immediate vs Concurrent): dv/sv/sva/basics.md
+              - 시퀀스 & 실무 패턴: dv/sv/sva/sequence.md
+              - property & assert / cover / assume: dv/sv/sva/property.md
+              - bind & 내부 신호 검증: dv/sv/sva/bind.md
   - 메모리 & 스토리지:
       - memory-storage/intro.md
       - DRAM: memory-storage/dram.md
