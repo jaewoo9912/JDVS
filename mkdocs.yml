@@ -101,12 +101,15 @@ nav:
           - 1. RTL 기초:
               - dv/sv/rtl/index.md
               - 조합 / 순차 논리 (= vs <=): dv/sv/rtl/comb-seq-logic.md
+              - 절차 블록 (initial / always): dv/sv/rtl/procedural-blocks.md
               - FSM (유한 상태 머신): dv/sv/rtl/fsm.md
               - X propagation (xprop): dv/sv/rtl/x-propagation.md
+              - X vs Z: dv/sv/rtl/x-vs-z.md
           - 2. 문법 & 데이터 타입:
               - dv/sv/syntax/index.md
               - 인덱스 부분 선택: dv/sv/syntax/indexed-part-select.md
               - static / automatic: dv/sv/syntax/static-automatic.md
+              - wire / reg / logic: dv/sv/syntax/net-variable.md
           - 3. Class:
               - dv/sv/class/index.md
               - virtual method / class: dv/sv/class/virtual.md

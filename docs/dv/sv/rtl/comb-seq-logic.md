@@ -56,6 +56,8 @@ end
 | **래치 위험** | 없음 (항상 식이 연결돼 있음) | 모든 경우에 값을 안 주면 생김 |
 | **언제 쓰나** | 식 하나로 끝날 때 | 조건이 여러 개거나 `case`가 필요할 때 |
 
+- 동작 방식(이벤트 기반, 0ns 자동 실행)과 감도 리스트 규칙은 → [절차 블록 §3](procedural-blocks.md#3-assign-vs-always_comb)
+
 ---
 
 ## 3. 의도치 않은 Latch & 글리치(Glitch)
@@ -194,6 +196,8 @@ always @(*)           y = a & b;  // 조합 회로
 | **`always_ff`** | 플립플롭 (순차) | 클럭 엣지 누락, FF가 아닌 회로(래치/조합) 추론, 다중 블록 구동 시 에러 |
 | **`always_comb`** | 조합 회로 | 감도 리스트 자동 완성, 의도치 않은 래치 추론 시 경고/에러 |
 | **`always`** | 회로가 아닌 곳 | TB 클럭 생성 (`always #5 clk = ~clk;`) 등 |
+
+- `initial` vs `always`, TB 클럭 생성 패턴은 → [절차 블록 (`initial` / `always` / `always_comb`)](procedural-blocks.md)
 
 ---
 

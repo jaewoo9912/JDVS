@@ -8,8 +8,8 @@
 
 | 폴더 | 한 줄 요약 | 페이지 |
 | --- | --- | --- |
-| [1. RTL 기초](rtl/index.md) | 설계 쪽 기본기 — 조합/순차, FSM, X 전파 | [조합 / 순차 논리](rtl/comb-seq-logic.md) · [FSM](rtl/fsm.md) · [X propagation](rtl/x-propagation.md) |
-| [2. 문법 & 데이터 타입](syntax/index.md) | 자주 헷갈리는 문법·변수 수명 | [인덱스 부분 선택](syntax/indexed-part-select.md) · [static / automatic](syntax/static-automatic.md) |
+| [1. RTL 기초](rtl/index.md) | 설계 쪽 기본기 — 조합/순차, 절차 블록, FSM, X/Z | [조합 / 순차 논리](rtl/comb-seq-logic.md) · [절차 블록](rtl/procedural-blocks.md) · [FSM](rtl/fsm.md) · [X propagation](rtl/x-propagation.md) · [X vs Z](rtl/x-vs-z.md) |
+| [2. 문법 & 데이터 타입](syntax/index.md) | 자주 헷갈리는 문법·변수 수명 | [인덱스 부분 선택](syntax/indexed-part-select.md) · [static / automatic](syntax/static-automatic.md) · [wire / reg / logic](syntax/net-variable.md) |
 | [3. Class](class/index.md) | TB 뼈대가 되는 class 문법 | [virtual method / class](class/virtual.md) · [객체 복사](class/object-copy.md) · [virtual class / interface](class/virtual-interface.md) |
 | [4. Thread & 동기화](thread/index.md) | 병렬 프로세스 실행과 동기화 | [fork-join](thread/fork-join.md) |
 | [5. Randomization](randomization/index.md) | 제약 랜덤화(constraint random) | [기본](randomization/basics.md) · [솔버](randomization/solver.md) · [Expression](randomization/expression.md) · [with / soft](randomization/with-soft.md) · [동적 제어](randomization/dynamic.md) · [분포 제어](randomization/distribution.md) |
@@ -28,6 +28,7 @@ flowchart LR
   SV --> RND[5. Randomization]
   SV --> SVA[6. Assertion]
   RTL -. "FSM 감시" .-> SVA
+  SYN -. "wire / logic" .-> RTL
   CLS -. "rand 멤버" .-> RND
   CLS -. "TB 구성" .-> THR
 ```
