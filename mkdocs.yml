@@ -132,6 +132,9 @@ nav:
               - 시퀀스 & 실무 패턴: dv/sv/sva/sequence.md
               - property & assert / cover / assume: dv/sv/sva/property.md
               - bind & 내부 신호 검증: dv/sv/sva/bind.md
+      - 컴파일 & 시뮬레이션:
+          - dv/compile/index.md
+          - "+incdir+": dv/compile/incdir.md
   - 메모리 & 스토리지:
       - memory-storage/intro.md
       - DRAM: memory-storage/dram.md

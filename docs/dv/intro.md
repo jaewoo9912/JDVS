@@ -28,6 +28,12 @@
 
     하드웨어 설계·검증 통합 언어 (HDL/HVL)
 
+-   :material-hammer-wrench:{ .lg .middle } &nbsp; **[컴파일 & 시뮬레이션](compile/index.md)**
+
+    ---
+
+    [+incdir+](compile/incdir.md) — `` `include`` 파일을 찾는 경로
+
 -   :material-cube-outline:{ .lg .middle } &nbsp; **[OOP](oop/index.md)**
 
     ---
