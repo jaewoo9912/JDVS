@@ -110,6 +110,7 @@ nav:
               - 인덱스 부분 선택: dv/sv/syntax/indexed-part-select.md
               - static / automatic: dv/sv/syntax/static-automatic.md
               - wire / reg / logic: dv/sv/syntax/net-variable.md
+              - modport: dv/sv/syntax/modport.md
           - 3. Class:
               - dv/sv/class/index.md
               - virtual method / class: dv/sv/class/virtual.md
@@ -135,6 +136,7 @@ nav:
       - 컴파일 & 시뮬레이션:
           - dv/compile/index.md
           - "+incdir+": dv/compile/incdir.md
+          - RTL lint: dv/compile/lint.md
   - 메모리 & 스토리지:
       - memory-storage/intro.md
       - DRAM: memory-storage/dram.md

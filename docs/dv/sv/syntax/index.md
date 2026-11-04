@@ -11,3 +11,4 @@
 | [인덱스 부분 선택 (`+:` / `-:`)](indexed-part-select.md) | 시작 비트 + 고정 폭으로 연속 비트를 잘라내는 `[start +: width]` |
 | [static / automatic (변수 lifetime)](static-automatic.md) | 변수 메모리 수명과 `fork` 안 변수 캡처 함정 |
 | [wire / reg / logic (net vs variable)](net-variable.md) | 전선 vs 그릇, `logic`의 단일 드라이버 규칙, tri-state / `inout` |
+| [modport](modport.md) | interface 신호의 방향을 역할(master / slave)별로 지정, 방향 실수를 컴파일에서 차단 |
