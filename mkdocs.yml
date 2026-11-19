@@ -155,12 +155,17 @@ nav:
   - 프로토콜:
       - protocols/index.md
       - AMBA:
-          - Unit 1 — APB & AHB: protocols/amba/amba-unit1-apb-ahb.md
-          - Unit 1 — APB & AHB Q&A: protocols/amba/amba-unit1-qa.md
-          - Unit 2 — AXI: protocols/amba/amba-unit2-axi.md
-          - Unit 2 — AXI Q&A: protocols/amba/amba-unit2-qa.md
-          - Unit 3 — AXI-Stream: protocols/amba/amba-unit3-axi-stream.md
-          - Unit 3 — AXI-Stream Q&A: protocols/amba/amba-unit3-qa.md
+          - 개념:
+              - protocols/amba/concept/index.md
+              - Unit 1 — APB & AHB: protocols/amba/concept/amba-unit1-apb-ahb.md
+              - Unit 1 — APB & AHB Q&A: protocols/amba/concept/amba-unit1-qa.md
+              - Unit 2 — AXI: protocols/amba/concept/amba-unit2-axi.md
+              - Unit 2 — AXI Q&A: protocols/amba/concept/amba-unit2-qa.md
+              - Unit 3 — AXI-Stream: protocols/amba/concept/amba-unit3-axi-stream.md
+              - Unit 3 — AXI-Stream Q&A: protocols/amba/concept/amba-unit3-qa.md
+          - 코딩 Tips:
+              - protocols/amba/coding-tips/index.md
+              - "AXI WSTRB 기본 개념 & lane 계산": protocols/amba/coding-tips/wstrb-lane.md
   - SOC:
       - soc/index.md
       - SoC CCTV: soc/cctv/index.md
