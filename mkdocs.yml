@@ -114,6 +114,7 @@ nav:
               - static / automatic: dv/sv/syntax/static-automatic.md
               - wire / reg / logic: dv/sv/syntax/net-variable.md
               - modport: dv/sv/syntax/modport.md
+              - packed / unpacked (struct & 배열): dv/sv/syntax/packed-unpacked.md
           - 3. Class:
               - dv/sv/class/index.md
               - virtual method / class: dv/sv/class/virtual.md
