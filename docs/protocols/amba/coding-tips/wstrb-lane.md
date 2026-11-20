@@ -258,3 +258,59 @@ hi = aligned % BUS + nbytes
 
 !!! tip "한 줄 정리"
     lane은 주소로 고정되고 그 계산은 master가 한다. 굵은 눈금이 항상 0, 4, 8, 12에만 오니까 `aligned % BUS`를 하면 몇 번째 칸(어느 lane 덩어리)인지 바로 나온다.
+
+---
+
+## 9. 개념 정리: AXI 정렬과 lane
+
+> 여기서 `nbytes`는 `1<<size`이고, `BUS`는 데이터 버스 폭을 바이트로 센 값이에요.
+
+| 단계 | 핵심 |
+|---|---|
+| 1 | size로 정렬해서 beat 칸을 정해요 |
+| 2 | 다음 beat는 칸 시작 + `nbytes` |
+| 3 | `addr / BUS`는 버스 기준 줄 |
+| 4 | lane은 줄 안의 제자리로 가는 고정 통로 |
+| 5 | WSTRB는 칸 안에서 실제로 쓸 바이트 표시 |
+
+### 1. size로 정렬해서 beat 칸을 정해요
+
+size에 따라 beat 하나가 보내는 바이트 수(`nbytes`)가 달라져요. 그래서 칸 경계도 size로 정해지고, 이건 스펙 공식 `Aligned_Address = Start / Number_Bytes × Number_Bytes`로 명시된 규칙이에요.
+
+```
+aligned = addr / nbytes * nbytes     // 칸 시작
+aligned + nbytes - 1                 // 칸 끝
+```
+
+이렇게 하면 beat 하나는 정렬된 메모리 칸 하나만 맡고, 칸 경계를 넘지 않아요.
+
+### 2. 다음 beat는 칸 시작에 nbytes를 더한 곳이에요
+
+`aligned += nbytes`로 넘어가요. 첫 beat만 unaligned일 수 있고, 그다음 beat부터는 칸을 빈틈없이 이어서 채워요. BUS 기준으로 정렬하면 narrow 전송에서 구멍이 생겨요.
+
+### 3. addr / BUS는 버스 기준 줄이에요
+
+W 채널에는 주소가 없어요. 그래서 slave가 AW로 받은 주소를 가지고 beat마다 직접 계산해요. 실제 메모리 줄(예: 64B)이 몇 번째인지, 그 줄 안의 어느 위치인지는 slave나 메모리 컨트롤러가 주소를 보고 알아서 정해요.
+
+### 4. lane은 데이터를 줄 안의 제자리로 바로 보내는 고정 통로예요
+
+lane n은 `WDATA[8n+7 : 8n]`이고, 버스 줄 안의 n번째 바이트 자리와 1:1로 연결돼 있어요. master는 각 바이트를 자기 주소에 맞는 lane에 실어 보내요. 그 lane 번호는 `addr % BUS`이고, 주소의 아래 `log2(BUS)`비트와 같아요. 그래서 slave는 shift나 재배치 없이 그대로 쓸 수 있어요.
+
+### 5. WSTRB는 칸 안에서 실제로 쓸 바이트를 표시해요
+
+```
+lo = addr % BUS
+hi = aligned % BUS + nbytes     // hi 자리는 포함하지 않아요
+```
+
+`lo`부터 `hi` 바로 앞까지 켜요. 첫 beat가 unaligned면 칸의 앞부분이 꺼지고, 나머지 beat는 칸을 꽉 채워요.
+
+### 전체 흐름
+
+1. AW로 주소, size, len을 보내요.
+2. master와 slave가 각각 beat마다 aligned를 계산해서 칸과 버스 줄을 정해요.
+3. master가 데이터를 lane에 실어서 WSTRB와 함께 보내요.
+4. slave는 WSTRB가 켜진 lane의 바이트만 계산한 위치에 그대로 써요.
+
+!!! tip "성립하는 이유"
+    size와 BUS가 둘 다 2의 거듭제곱이라, 칸이 버스 줄 경계를 절대 넘지 않아요. 그래서 `aligned % BUS`가 항상 그 칸이 시작하는 lane이 돼요.
