@@ -142,6 +142,7 @@ nav:
       - 컴파일 & 시뮬레이션:
           - dv/compile/index.md
           - "+incdir+": dv/compile/incdir.md
+          - include / import / export: dv/compile/include-import.md
           - RTL lint: dv/compile/lint.md
   - 메모리 & 스토리지:
       - memory-storage/intro.md

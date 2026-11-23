@@ -7,8 +7,16 @@
 ## 1. `+incdir+`란?
 
 - `` `include "파일명"``이 나오면 컴파일러는 **현재 디렉토리**를 먼저 보고, 없으면 **`+incdir+`로 준 경로를 순서대로** 찾는다.
+- 경로가 여러 개면 앞에 적은 것부터 찾고, 어디에서도 찾지 못하면 `file not found` 에러가 난다.
 - 찾은 파일은 `` `include``가 적힌 자리에 **텍스트로 그대로 복사**된다.
 - **경로만 알려줄 뿐, 파일을 컴파일하지 않는다.** 실제 컴파일 대상은 명령줄이나 filelist(`-f`)에 직접 적은 파일이다.
+
+```bash
+vcs +incdir+./axi/src +incdir+$UVM_HOME/src axi_pkg.sv tb.sv
+```
+
+!!! tip "비유"
+    도서관 위치를 알려줘도 책을 빌리지 않으면 내 손엔 없다. 폴더에 파일이 있어도 `` `include``로 부르지 않으면(또는 컴파일 명령에 직접 지정하지 않으면) 컴파일에 들어가지 않는다.
 
 ---
 
@@ -45,4 +53,4 @@ endpackage
     interface **안에서** `` `include``를 쓰면 (예: `` `include "axi_defines.svh"``) 그 파일의 경로는 `+incdir+`로 잡아줘야 한다.
 
 !!! tip "`` `include`` vs `import`"
-    `+incdir+`는 `` `include``(텍스트 복사)에만 쓰인다. `import`는 이미 컴파일된 package를 가져다 쓰는 것이라 `+incdir+`와 관계없다.
+    `+incdir+`는 `` `include``(텍스트 복사)에만 쓰인다. `import`는 이미 컴파일된 package를 가져다 쓰는 것이라 `+incdir+`와 관계없다. 자세한 비교는 [`include / import / export](include-import.md) 참고.
