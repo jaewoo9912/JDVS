@@ -10,5 +10,5 @@
 ## 주제
 
 - **AMBA** (ARM의 SoC 온칩 버스 표준 — APB / AHB / AXI / ACE / CHI)
-    - [개념](amba/concept/index.md) — Unit 1~3 (APB & AHB / AXI / AXI-Stream) 본문과 Q&A ✅
+    - [개념](amba/concept/index.md) — Unit 1~3 (APB·AHB / AXI / AXI-Stream) 본문과 Q&A ✅
     - [코딩 Tips](amba/coding-tips/index.md) — AXI WSTRB 기본 개념 & lane 계산
