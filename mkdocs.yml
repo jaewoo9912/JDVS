@@ -150,6 +150,7 @@ nav:
       - 플래시:
           - memory-storage/flash/index.md
           - Flash 셀 동작 원리: memory-storage/flash/flash-cell.md
+          - 소자 · 전압 레벨 · 도메인: memory-storage/flash/flash-domain.md
   - 컴퓨터 구조:
       - computer-architecture/index.md
       - Unit 1 — 왜 컴퓨터 구조를 배우는가: computer-architecture/unit1-why-comparch.md
