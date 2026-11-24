@@ -2,9 +2,7 @@
 
 > 요약: AHB는 **address phase와 data phase를 한 cycle 어긋나게 겹치는 2단 pipeline 버스**다. 1절에서 AHB가 무엇인지 정리하고, 2절부터 스펙(ARM IHI 0033C)의 규칙(pipeline, HTRANS·HSIZE·HBURST, **waited transfer**, **2-cycle ERROR**, interconnect)을 AXI와 비교하며 cycle 단위 파형으로 정리한다.
 >
-> ※ APB·AXI와의 비교(2-phase vs pipeline, Bridge, 셋을 다 쓰는 이유)는 [APB vs AHB vs AXI 비교](amba-bus-comparison.md), 세부 Q&A는 [AHB Q&A](amba-unit1-2-qa.md)에 있다.
->
-> ※ 퀴즈 5문제는 맨 끝 [12절](#12-5)에 있다.
+> ※ APB·AXI와의 비교(2-phase vs pipeline, Bridge, 셋을 다 쓰는 이유)는 [APB vs AHB vs AXI 비교](amba-bus-comparison.md), 복습 문제는 [AHB 복습 퀴즈](amba-ahb-quiz.md)에 있다.
 >
 > ※ 출처: Unit 1-2 AHB 개념 학습 + 2026-11-23 Spec 마스터와의 스펙 학습 (ARM IHI 0033C). 스펙 범위는 1~8단계(개요 ~ interconnect)이고, Locked/HPROT/AHB5 확장은 다루지 않았다.
 
@@ -817,71 +815,3 @@ if (HREADY) mux_sel <= HSEL;   // wait 중에는 유지 (일반적인 구현 예
 !!! tip "한 줄 정리"
     Subordinate는 **다른 Subordinate의 data phase가 언제 끝나는지 모른다.** 그래서 내 주소를 언제 받아야 할지 스스로 알 수 없고, 이를 버스 전체의 `HREADY`로 안다 → `HSEL && HREADY && (NONSEQ|SEQ)`일 때 주소를 받는다.
     반대로 **내 data phase가 언제 끝날지는 내가 정한다** → 처리 중이면 `HREADYOUT=0`으로 늘리고, 끝나면 `HREADYOUT=1`을 낸다. 이 값이 Mux를 거쳐 `HREADY`가 된다.
-
----
-
-## 12. 퀴즈 (5문제)
-
-!!! success "결과: 5문제 전부 정답"
-
-### Q1. Pipeline
-
-32-bit 버스. C0에 A(0x10, NONSEQ, read), C1에 B(0x20, NONSEQ, read)가 address phase에 있다. C1에서 HREADY=0, C2에서 HREADY=1이다.
-
-(a) B의 주소는 어느 cycle 끝 edge에서 확정되나?
-(b) B의 HRDATA는 어느 cycle에 유효해야 하나? (B는 0-wait)
-
-??? success "정답"
-    **(a) C2 끝  (b) C3**
-
-    | cycle | C0 | C1 | C2 | C3 |
-    |---|---|---|---|---|
-    | addr phase | A | B | B (유지) | – |
-    | data phase | – | A (wait) | A 완료 | **B** |
-    | HREADY | 1 | 0 | 1 | 1 |
-    | edge에서 확정 | A 주소 | 없음 (멈춤) | A 완료, **B 주소** | **B 완료 (HRDATA 유효)** |
-
-    C1의 HREADY=0 때문에 B의 address phase가 C2까지 늘어난다.
-
-### Q2. HTRANS / Burst
-
-INCR4 burst 도중 Manager가 BUSY를 보냈다.
-
-(a) Subordinate는 그 BUSY의 data phase에서 어떤 응답을 줘야 하나? (HREADYOUT, HRESP)
-(b) INCR4 burst를 마지막에 BUSY로 끝내도 되나?
-
-??? success "정답"
-    **(a) HREADYOUT=1, HRESP=OKAY (0-wait). Subordinate는 그 transfer를 무시한다.**
-
-    **(b) 안 된다.** 고정 길이 burst는 마지막 beat가 반드시 SEQ이고, 그다음에는 IDLE이나 NONSEQ가 온다. BUSY로 끝낼 수 있는 건 길이 미정인 INCR뿐이다.
-
-### Q3. WRAP
-
-WRAP8, HSIZE=word(4B), 시작 주소 0x18. 8개 beat의 주소를 순서대로 쓰라. (힌트: wrap 범위부터)
-
-??? success "정답"
-    wrap 범위 = 8 beat × 4B = 32B → **0x00 ~ 0x1F**
-
-    **0x18 → 0x1C → 0x00 → 0x04 → 0x08 → 0x0C → 0x10 → 0x14**
-
-    0x1C 다음에 0x20이 아니라 블록 처음(0x00)으로 돌아간다.
-
-### Q4. HRESP
-
-Subordinate가 ERROR를 1 cycle만 줬다 (HRESP=ERROR, HREADYOUT=1). 왜 스펙 위반인지 한 줄로 설명하라.
-
-??? success "정답"
-    **1-cycle ERROR는 HREADY=1과 같은 edge에 다음 transfer의 주소까지 확정돼 버려서, Manager가 그 transfer를 취소할 기회가 없다. 원인은 pipeline이다.**
-
-
-### Q5. Interconnect
-
-Sub0이 wait 중(HREADYOUT0=0)이고, 그 cycle에 Sub1으로 가는 NONSEQ가 address phase에 있다 (HSEL1=1).
-
-(a) Sub1은 이 cycle 끝에 주소를 저장해야 하나?
-(b) 이때 mux는 누구의 HRDATA/HRESP/HREADYOUT을 고르고 있나?
-
-??? success "정답"
-    **(a) 저장하지 않는다.** 판단 근거는 `HSEL1 && HREADY`다. HSEL1=1이어도 HREADY=0이라 저장하지 않는다. 기다리는 이유는 AHB에 outstanding이 없어서다.
-
-    **(b) Sub0.** mux_sel은 data phase 중인 Sub0에 머물러 있고, HREADY=0인 동안에는 갱신되지 않는다.

@@ -205,7 +205,7 @@ PREADY   -    -      0          1          -
 | **T3** | ACCESS | slave가 `PREADY=1`. **이 클럭의 상승 에지에서 write가 실제로 일어난다.** slave 레지스터에 0xAB 기록. |
 | **T4** | IDLE | `PSEL=PENABLE=0`. (다음 전송이 있으면 IDLE 대신 바로 SETUP으로.) |
 
-> **핵심:** wait state가 없으면(slave가 즉시 `PREADY=1`) 정확히 **2클럭**(SETUP 1 + ACCESS 1). slave가 느릴 때만 ACCESS가 늘어난다. **SETUP은 절대 안 늘어나고, ACCESS만 늘어난다.** read도 동일한 타이밍이며, ACCESS에서 마스터가 `PRDATA`를 샘플링한다(→ [AHB Q&A Q1](amba-unit1-2-qa.md)).
+> **핵심:** wait state가 없으면(slave가 즉시 `PREADY=1`) 정확히 **2클럭**(SETUP 1 + ACCESS 1). slave가 느릴 때만 ACCESS가 늘어난다. **SETUP은 절대 안 늘어나고, ACCESS만 늘어난다.** read도 동일한 타이밍이며, ACCESS에서 마스터가 `PRDATA`를 샘플링한다(→ [AHB — 2.4 wait state — 읽기와 쓰기](amba-ahb.md#24-wait-state-fig-3-33-4)).
 
 ### 3-5. 한 번의 핸드셰이크 (자세히는 [Q&A Q3](amba-unit1-1-qa.md))
 
