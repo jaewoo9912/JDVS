@@ -287,8 +287,35 @@ end
 | NONSEQ / SEQ (실제) | 필요하면 wait, OKAY 또는 ERROR |
 | IDLE / BUSY (가짜) | 항상 바로 `1` + OKAY. wait·ERROR 금지 |
 
-!!! tip "누가 쉬는가"
-    `BUSY` = **Manager**가 쉼 (burst 도중에만), `HREADY=0` = **Subordinate**가 쉼. burst 밖에서 Manager가 쉴 때는 `IDLE`.
+### 3.4 BUSY vs IDLE — SINGLE 사이에 BUSY를 못 쓰는 이유
+
+BUSY는 "Manager가 지금 다음 beat를 못 보낸다"는 뜻이지만, **burst 중간**이라는 조건이 붙는다 (3.1).
+
+**BUSY가 들고 있는 정보**
+
+- BUSY 동안 `HADDR`·control은 **burst의 다음 beat 값**이어야 한다 (스펙, 3.2의 C1).
+- 즉 BUSY = "다음 beat 주소는 이것인데 데이터가 아직 준비 안 됨". **이어갈 burst가 있어야만** 의미가 있다.
+
+**SINGLE 사이의 쉬는 cycle**
+
+| HTRANS | C0 | C1 | C2 |
+|---|---|---|---|
+| ❌ BUSY 사용 | NONSEQ (SINGLE A) | **BUSY** — HADDR에 낼 "다음 beat"가 없음 | NONSEQ (SINGLE B) |
+| ✅ IDLE 사용 | NONSEQ (SINGLE A) | **IDLE** | NONSEQ (SINGLE B) |
+
+- SINGLE은 NONSEQ 1 beat로 끝난다. C1 시점에 A는 이미 끝났고 B는 아직 시작 전이라, BUSY가 가리킬 "다음 beat"가 없다.
+- burst 밖에서 쉬려면 **IDLE**을 쓴다 (5.4 "SINGLE 뒤 BUSY 금지"와 같은 규칙).
+
+**AXI와 비교 (추론)**
+
+| AXI | AHB |
+|---|---|
+| transaction 사이에 `VALID=0` | IDLE |
+| W burst 중간(WLAST 전)에 `WVALID=0` | BUSY |
+
+!!! tip "누가, 어디서 쉬는가"
+    AXI는 두 경우 모두 `VALID=0`이지만 AHB는 둘로 나눈다. **burst 안에서 Manager가 쉼 = BUSY, burst 밖에서 Manager가 쉼 = IDLE.** SINGLE과 SINGLE 사이는 burst 밖이므로 IDLE이다.
+    Subordinate가 쉬는 것은 HTRANS가 아니라 `HREADY=0`이다.
 
 ---
 
