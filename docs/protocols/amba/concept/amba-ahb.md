@@ -1,6 +1,6 @@
 # Unit 1-2 — AHB (파이프라인 버스)
 
-> 요약: AHB는 **address phase와 data phase를 한 cycle 어긋나게 겹치는 2단 pipeline 버스**다. 이 페이지는 AHB의 기본 개념(pipeline 아이디어, AHB-Lite, HTRANS, WRAP과 critical word first)과 스펙(ARM IHI 0033C)의 세부 규칙(HTRANS·HSIZE·HBURST, **waited transfer**, **2-cycle ERROR**, interconnect의 HSEL / HREADY / HREADYOUT / default Subordinate)을 AXI와 비교하며 cycle 단위 파형으로 정리한다.
+> 요약: AHB는 **address phase와 data phase를 한 cycle 어긋나게 겹치는 2단 pipeline 버스**다. 1절에서 AHB가 무엇인지 정리하고, 2절부터 스펙(ARM IHI 0033C)의 규칙(pipeline, HTRANS·HSIZE·HBURST, **waited transfer**, **2-cycle ERROR**, interconnect)을 AXI와 비교하며 cycle 단위 파형으로 정리한다.
 >
 > ※ APB·AXI와의 비교(2-phase vs pipeline, Bridge, 셋을 다 쓰는 이유)는 [APB vs AHB vs AXI 비교](amba-bus-comparison.md), 세부 Q&A는 [AHB Q&A](amba-unit1-2-qa.md)에 있다.
 >
@@ -8,23 +8,39 @@
 >
 > ※ 출처: Unit 1-2 AHB 개념 학습 + 2026-11-23 Spec 마스터와의 스펙 학습 (ARM IHI 0033C). 스펙 범위는 1~8단계(개요 ~ interconnect)이고, Locked/HPROT/AHB5 확장은 다루지 않았다.
 
-**파형 표기 규칙**
-
-- `Cn`은 n번째 cycle이고, 표의 `HREADY` 값은 **그 cycle 끝 edge의 값**이다.
-- "edge에서 확정" 줄은 그 cycle 끝 edge에서 끝나거나 받아지는 것을 적은 것이다.
-
 ---
 
-## 1. 개요 — AXI와 비교
+## 1. AHB란 무엇인가
 
-### 1.1 핵심 아이디어 — 주소와 데이터를 겹친다
+**AHB(Advanced High-performance Bus)**는 AMBA의 pipeline 버스다. Manager가 transfer를 시작하고 Subordinate가 응답하며, 모든 transfer는 **address phase(1 cycle) + data phase(1 cycle 이상)**로 이뤄진다. 앞 transfer의 data phase 동안 다음 transfer의 address phase를 겹쳐 진행하므로, pipeline이 차면 매 cycle 1 transfer가 끝난다.
+
+| 항목 | AHB |
+|---|---|
+| 구조 | 2단 pipeline (address phase / data phase 겹침) |
+| handshake | `HREADY` 하나 (버스 전체) |
+| burst | SINGLE, INCR(길이 미정), INCR/WRAP 4·8·16 |
+| 순서 | single outstanding, 항상 in-order (ID·LAST 없음) |
+| 응답 | `HRESP` OKAY / ERROR |
+
+### 1.1 등장인물과 transfer
+
+```text
+ [Manager]  ── 주소/명령 ──▶  [Subordinate]
+ (CPU 등)   ◀── 읽은 데이터 ──  (메모리, 레지스터 등)
+            ── 쓸 데이터 ──▶
+```
+
+- **Manager**(옛 Master): transfer를 시작하는 쪽. **Subordinate**(옛 Slave): 응답하는 쪽.
+- **transfer** = Manager의 읽기/쓰기 한 번 (address phase + data phase).
+
+### 1.2 핵심 아이디어 — 주소와 데이터를 겹친다
 
 APB는 "주소를 깔고 → 데이터를 주고받기"를 직렬로 처리한다. AHB는 이 둘을 **한 cycle 어긋나게 겹친다** (명령어 pipeline과 같은 발상).
 
 - A1의 데이터(D1)를 주고받는 cycle에 **이미 A2의 주소가 나간다.**
 - pipeline이 차면 **매 cycle 1 transfer**가 끝난다. 이것이 AHB가 APB보다 빠른 이유다. 신호 단위 파형과 cycle 수 비교는 [2.3](#23-transfer-pipeline)에 있다.
 
-### 1.2 AHB-Lite — 실무 기본형
+### 1.3 AHB-Lite — 실무 기본형
 
 | | AHB (원형) | AHB-Lite |
 |---|---|---|
@@ -34,16 +50,7 @@ APB는 "주소를 깔고 → 데이터를 주고받기"를 직렬로 처리한�
 
 - 실무에서는 대부분 AHB-Lite를 쓰고, Manager가 여럿 필요하면 그 위에 interconnect를 둔다. 이 페이지의 규칙과 파형은 AHB-Lite 기준이다.
 
-### 1.3 등장인물
-
-```text
- [Manager]  ── 주소/명령 ──▶  [Subordinate]
- (CPU 등)   ◀── 읽은 데이터 ──  (메모리, 레지스터 등)
-            ── 쓸 데이터 ──▶
-```
-
-- **Manager**(옛 Master): transfer를 시작하는 쪽. **Subordinate**(옛 Slave): 응답하는 쪽.
-- **transfer** = Manager의 읽기/쓰기 한 번. 항상 **address phase(1 cycle) + data phase(1 cycle 이상)**로 이뤄진다.
+**AXI와 비교** — 아래 1.4~1.6은 AXI를 아는 상태에서 AHB의 채널·handshake·신호를 대응시킨 것이다.
 
 ### 1.4 채널 구조
 
@@ -92,6 +99,11 @@ AHB:  HADDR/HTRANS/HWRITE/HSIZE/HBURST ─▶   (주소+제어, 읽기/쓰기 �
 ---
 
 ## 2. Transfer 기초 — 2단 pipeline (Fig 3-1 ~ 3-5)
+
+**파형 표기 규칙**
+
+- `Cn`은 n번째 cycle이고, 표의 `HREADY` 값은 **그 cycle 끝 edge의 값**이다.
+- "edge에서 확정" 줄은 그 cycle 끝 edge에서 끝나거나 받아지는 것을 적은 것이다.
 
 ### 2.1 핵심 규칙
 
