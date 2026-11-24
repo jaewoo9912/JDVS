@@ -147,6 +147,9 @@ nav:
   - 메모리 & 스토리지:
       - memory-storage/intro.md
       - DRAM: memory-storage/dram.md
+      - 플래시:
+          - memory-storage/flash/index.md
+          - Flash 셀 동작 원리: memory-storage/flash/flash-cell.md
   - 컴퓨터 구조:
       - computer-architecture/index.md
       - Unit 1 — 왜 컴퓨터 구조를 배우는가: computer-architecture/unit1-why-comparch.md
