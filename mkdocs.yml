@@ -152,6 +152,7 @@ nav:
           - Flash 셀 동작 원리: memory-storage/flash/flash-cell.md
           - 소자 · 전압 레벨 · 도메인: memory-storage/flash/flash-domain.md
           - Flash 보조 기능과 칩의 일생: memory-storage/flash/flash-support-feature.md
+          - Endurance와 Retention: memory-storage/flash/flash-endurance-retention.md
   - 컴퓨터 구조:
       - computer-architecture/index.md
       - Unit 1 — 왜 컴퓨터 구조를 배우는가: computer-architecture/unit1-why-comparch.md
