@@ -4,7 +4,7 @@
 >
 > ※ 이 단원을 읽으며 나온 세부 질문(글리치, setup time, PSEL→PENABLE 2스텝 등)은 별도 페이지 [**`amba-unit1-1-qa.md`**](amba-unit1-1-qa.md) 에 원문 그대로 정리돼 있다.
 >
-> ※ 파이프라인 버스 AHB는 다음 단원 [Unit 1-2 — AHB](amba-unit1-2-ahb.md) 에서 이어진다.
+> ※ 파이프라인 버스 AHB는 다음 단원 [Unit 1-2 — AHB](amba-ahb.md) 에서 이어진다.
 
 ## 0. 핵심 한 문장
 
@@ -234,4 +234,4 @@ PREADY   -    -      0          1          -
 
 ---
 
-→ 이 단원을 보며 나온 모든 세부 질문과 답은 [**`amba-unit1-1-qa.md`**](amba-unit1-1-qa.md) 참고. 다음 단원: [Unit 1-2 — AHB](amba-unit1-2-ahb.md).
+→ 이 단원을 보며 나온 모든 세부 질문과 답은 [**`amba-unit1-1-qa.md`**](amba-unit1-1-qa.md) 참고. 다음 단원: [Unit 1-2 — AHB](amba-ahb.md).

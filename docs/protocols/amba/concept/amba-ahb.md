@@ -1,12 +1,12 @@
-# Unit 1-2 — AHB 스펙 정리 (AXI 비교)
+# Unit 1-2 — AHB (파이프라인 버스)
 
-> 요약: AXI를 아는 상태에서 AHB 스펙(ARM IHI 0033C)을 읽을 때 같은 점과 다른 점을 정리한다. **2단 pipeline**, HTRANS·HSIZE·HBURST 규칙, **waited transfer**, **2-cycle ERROR**, interconnect(HSEL / HREADY / HREADYOUT / default Subordinate)를 스펙 그림(Fig 3-x, 4-x) 기준으로 cycle 단위 파형과 함께 정리한다.
+> 요약: AHB는 **address phase와 data phase를 한 cycle 어긋나게 겹치는 2단 pipeline 버스**다. 이 페이지는 AHB의 기본 개념(pipeline 아이디어, AHB-Lite, HTRANS, WRAP과 critical word first)과 스펙(ARM IHI 0033C)의 세부 규칙(HTRANS·HSIZE·HBURST, **waited transfer**, **2-cycle ERROR**, interconnect의 HSEL / HREADY / HREADYOUT / default Subordinate)을 AXI와 비교하며 cycle 단위 파형으로 정리한다.
 >
-> ※ AHB 기본 개념(파이프라인 아이디어, WRAP 원리, Bridge, trade-off)은 [Unit 1-2 — AHB](amba-unit1-2-ahb.md), 세부 Q&A는 [AHB Q&A](amba-unit1-2-qa.md)에 있다.
+> ※ APB·AXI와의 비교(2-phase vs pipeline, Bridge, 셋을 다 쓰는 이유)는 [APB vs AHB vs AXI 비교](amba-bus-comparison.md), 세부 Q&A는 [AHB Q&A](amba-unit1-2-qa.md)에 있다.
 >
 > ※ 퀴즈 5문제는 맨 끝 [12절](#12-5)에 있다.
 >
-> ※ 출처: 2026-11-23 Spec 마스터와의 스펙 학습 (ARM IHI 0033C). 범위는 1~8단계(개요 ~ interconnect)이고, Locked/HPROT/AHB5 확장은 다루지 않았다.
+> ※ 출처: Unit 1-2 AHB 개념 학습 + 2026-11-23 Spec 마스터와의 스펙 학습 (ARM IHI 0033C). 스펙 범위는 1~8단계(개요 ~ interconnect)이고, Locked/HPROT/AHB5 확장은 다루지 않았다.
 
 **파형 표기 규칙**
 
@@ -17,7 +17,24 @@
 
 ## 1. 개요 — AXI와 비교
 
-### 1.1 등장인물
+### 1.1 핵심 아이디어 — 주소와 데이터를 겹친다
+
+APB는 "주소를 깔고 → 데이터를 주고받기"를 직렬로 처리한다. AHB는 이 둘을 **한 cycle 어긋나게 겹친다** (명령어 pipeline과 같은 발상).
+
+- A1의 데이터(D1)를 주고받는 cycle에 **이미 A2의 주소가 나간다.**
+- pipeline이 차면 **매 cycle 1 transfer**가 끝난다. 이것이 AHB가 APB보다 빠른 이유다. 신호 단위 파형과 cycle 수 비교는 [2.3](#23-transfer-pipeline)에 있다.
+
+### 1.2 AHB-Lite — 실무 기본형
+
+| | AHB (원형) | AHB-Lite |
+|---|---|---|
+| Manager 수 | 여러 개 (arbiter로 중재) | **1개** |
+| 추가 응답 | SPLIT / RETRY | 없음 (OKAY / ERROR만) |
+| 복잡도 | 높음 | arbitration·SPLIT·RETRY를 들어내 단순 |
+
+- 실무에서는 대부분 AHB-Lite를 쓰고, Manager가 여럿 필요하면 그 위에 interconnect를 둔다. 이 페이지의 규칙과 파형은 AHB-Lite 기준이다.
+
+### 1.3 등장인물
 
 ```text
  [Manager]  ── 주소/명령 ──▶  [Subordinate]
@@ -28,7 +45,7 @@
 - **Manager**(옛 Master): transfer를 시작하는 쪽. **Subordinate**(옛 Slave): 응답하는 쪽.
 - **transfer** = Manager의 읽기/쓰기 한 번. 항상 **address phase(1 cycle) + data phase(1 cycle 이상)**로 이뤄진다.
 
-### 1.2 채널 구조
+### 1.4 채널 구조
 
 ```text
 AXI:  AW ─▶  W ─▶  B ◀─      (쓰기 3채널)
@@ -43,7 +60,7 @@ AHB:  HADDR/HTRANS/HWRITE/HSIZE/HBURST ─▶   (주소+제어, 읽기/쓰기 �
 
 - AHB는 읽기·쓰기가 **주소 버스를 공유**하고, `HWRITE`로 방향만 정한다.
 
-### 1.3 handshake·순서 비교
+### 1.5 handshake·순서 비교
 
 | | AXI | AHB |
 |---|---|---|
@@ -53,18 +70,24 @@ AHB:  HADDR/HTRANS/HWRITE/HSIZE/HBURST ─▶   (주소+제어, 읽기/쓰기 �
 | 순서·동시성 | outstanding + ID로 out-of-order 가능 | outstanding·ID·LAST 없음. 항상 in-order |
 | 동시에 진행되는 것 | 여러 transaction | data phase 1개 + 다음 address phase 1개 |
 
-### 1.4 신호 대응표
+### 1.6 신호 — 방향과 AXI 대응
 
-| AXI | AHB | 비고 |
-|---|---|---|
-| `AxADDR` | `HADDR` | |
-| `AxLEN` + `AxBURST` | `HBURST` | 길이·종류를 한 신호로 |
-| `AxSIZE` | `HSIZE` | 동일 개념 |
-| `AxPROT` / `AxCACHE` | `HPROT` | |
-| `WDATA` / `RDATA` | `HWDATA` / `HRDATA` | |
-| `BRESP` / `RRESP` | `HRESP` | OKAY / ERROR 만 |
-| `VALID` | `HTRANS` (유사) | 유효 여부 + NONSEQ/SEQ/BUSY 종류까지 |
-| `READY` | `HREADY` | 버스 전체에 하나 |
+| AHB | 방향 | 뜻 | AXI 대응 |
+|---|---|---|---|
+| `HADDR` | M→S | 주소 (address phase) | `AxADDR` |
+| `HTRANS[1:0]` | M→S | transfer 종류 IDLE/BUSY/NONSEQ/SEQ | `VALID` (유사, 종류까지 표시) |
+| `HWRITE` | M→S | 1=write, 0=read | – (AXI는 채널로 구분) |
+| `HSIZE[2:0]` | M→S | beat 크기 = 2^HSIZE byte | `AxSIZE` |
+| `HBURST[2:0]` | M→S | burst 종류 + 길이 | `AxLEN` + `AxBURST` |
+| `HPROT` | M→S | 보호 속성 | `AxPROT` / `AxCACHE` |
+| `HMASTLOCK` | M→S | locked transfer | – |
+| `HWDATA` | M→S | write 데이터 (data phase) | `WDATA` |
+| `HRDATA` | S→M | read 데이터 (data phase) | `RDATA` |
+| `HREADY` | S→M (HREADYOUT → Mux) | data phase 완료. **버스 전체에 하나** | `READY` |
+| `HRESP` | S→M | OKAY(0) / ERROR(1)만 | `BRESP` / `RRESP` |
+| `HSEL` | Decoder→S | Subordinate 선택 | – |
+
+- `HREADY`가 버스의 박자다. `HREADY=1`인 cycle 끝에 지금 data phase가 끝나고 **동시에 다음 address phase도 확정**된다 (2절).
 
 ---
 
@@ -92,7 +115,22 @@ AHB:  HADDR/HTRANS/HWRITE/HSIZE/HBURST ─▶   (주소+제어, 읽기/쓰기 �
 
 - `HWRITE=1`이면 Manager가 `HWDATA`를, `HWRITE=0`이면 Subordinate가 `HRDATA`를 구동한다.
 
-### 2.3 wait state — 읽기와 쓰기 (Fig 3-3/3-4)
+### 2.3 연속 transfer — pipeline의 이득
+
+transfer 하나로는 겹침이 안 보인다. 0-wait로 **세 번 연속** 쓰면 드러난다.
+
+| 신호 | C0 | C1 | C2 | C3 |
+|---|---|---|---|---|
+| HTRANS | NONSEQ | SEQ | SEQ | IDLE |
+| HADDR | A1 | A2 | A3 | – |
+| HWDATA | – | D1 | D2 | D3 |
+| HREADY | 1 | 1 | 1 | 1 |
+| edge에서 확정 | A1 주소 | A1 완료 + A2 주소 | A2 완료 + A3 주소 | A3 완료 |
+
+- C1, C2: 다음 주소를 내는 **동시에** 앞 데이터를 준다.
+- 3 transfer에 4 cycle. APB처럼 직렬이면 6 cycle(2 × 3)이다. 일반적으로 **N transfer = N+1 cycle** (APB는 2N).
+
+### 2.4 wait state — 읽기와 쓰기 (Fig 3-3/3-4)
 
 **읽기 2 wait**
 
@@ -119,7 +157,10 @@ AHB:  HADDR/HTRANS/HWRITE/HSIZE/HBURST ─▶   (주소+제어, 읽기/쓰기 �
 | 읽기 | `HREADY=1`로 끝내는 cycle에만 맞는 데이터를 주면 됨 | RVALID를 늦게 올리는 것 |
 | 쓰기 | wait 동안 `HWDATA`를 **바꾸면 안 됨** (언제 샘플될지 모름) | WVALID=1, WREADY=0 동안 WDATA 유지 |
 
-### 2.4 pipeline에서 주소가 밀리는 경우
+!!! tip "APB와의 결정적 차이"
+    APB는 주소와 write 데이터를 **같은 phase**(SETUP부터)에 함께 낸다. AHB는 **주소를 먼저(C0), 데이터를 한 cycle 뒤(C1)** 낸다. 이 한 cycle 어긋남 덕에 한 transfer의 data phase 동안 다음 transfer의 address phase를 겹칠 수 있다.
+
+### 2.5 pipeline에서 주소가 밀리는 경우
 
 | 신호 | C0 | C1 | C2 | C3 |
 |---|---|---|---|---|
@@ -130,7 +171,7 @@ AHB:  HADDR/HTRANS/HWRITE/HSIZE/HBURST ─▶   (주소+제어, 읽기/쓰기 �
 
 - C1의 `HREADY=0`은 A의 data phase를 늘리는 것이지, B 주소를 거부하는 게 아니다.
 
-### 2.5 pipeline + wait 혼합 (Fig 3-5)
+### 2.6 pipeline + wait 혼합 (Fig 3-5)
 
 A = 0-wait 쓰기, B = 1-wait 읽기, C = 0-wait 쓰기.
 
@@ -146,7 +187,7 @@ A = 0-wait 쓰기, B = 1-wait 읽기, C = 0-wait 쓰기.
 - C2: B가 wait(`HREADY=0`)을 건다 → 같은 cycle에 있던 **C의 address phase가 덩달아 늘어난다**.
 - C3: B 데이터가 오고 C 주소가 확정된다. C4에 C의 데이터가 온다.
 
-### 2.6 따로 보낼 때 (IDLE 사이에 끼움)
+### 2.7 따로 보낼 때 (IDLE 사이에 끼움)
 
 | 신호 | C0 | C1 | C2 |
 |---|---|---|---|
@@ -165,6 +206,8 @@ A = 0-wait 쓰기, B = 1-wait 읽기, C = 0-wait 쓰기.
 ---
 
 ## 3. HTRANS
+
+pipeline이라 address phase에는 **매 cycle 무언가가 흐른다.** 그래서 Manager는 매 cycle 그 주소가 실제 transfer인지, 쉬는 cycle인지, burst의 일부인지를 `HTRANS`로 알려야 한다.
 
 ### 3.1 네 가지 값
 
@@ -291,12 +334,12 @@ byte lane         3      2      1     0
 
 ### 5.1 HBURST 값
 
-| HBURST | 이름 | AXI로 치면 |
-|---|---|---|
-| 000 | SINGLE | LEN=0 |
-| 001 | INCR | INCR인데 **길이 미정** (AXI에 없음) |
-| 011 / 101 / 111 | INCR4 / 8 / 16 | INCR, LEN=3/7/15 |
-| 010 / 100 / 110 | WRAP4 / 8 / 16 | WRAP, LEN=3/7/15 |
+| HBURST | 이름 | 용도 | AXI로 치면 |
+|---|---|---|---|
+| 000 | SINGLE | 일반 단일 접근 | LEN=0 |
+| 001 | INCR | 길이를 모를 때 | INCR인데 **길이 미정** (AXI에 없음) |
+| 011 / 101 / 111 | INCR4 / 8 / 16 | 정해진 크기의 블록 | INCR, LEN=3/7/15 |
+| 010 / 100 / 110 | WRAP4 / 8 / 16 | **cache line fill** | WRAP, LEN=3/7/15 |
 
 - 길이 = **beat 수**, 총 바이트 = beat 수 × HSIZE. 예: 32bit 버스, Word, INCR4 → 16B.
 - 고정 길이는 4/8/16만. 그 외 길이는 **INCR**로 보내고 NONSEQ나 IDLE로 끝낸다.
@@ -315,9 +358,34 @@ byte lane         3      2      1     0
 | WRAP (경계 32B) | WRAP8, Word, 0x18 → 블록 `0x00~0x1F` | `18 → 1C → 00 → 04 → 08 → 0C → 10 → 14` |
 
 - INCR: `다음 주소 = 이전 주소 + HSIZE 바이트`, 경계에서 감지 않음.
-- WRAP: **경계 = beat 수 × HSIZE 바이트**, 그 크기로 정렬된 블록 안에서 돈다. AXI WRAP과 계산법이 같고, 주로 cache line fill(필요한 word 먼저)에 쓴다.
+- WRAP: **경계 = beat 수 × HSIZE 바이트**, 그 크기로 정렬된 블록 안에서 돈다. AXI WRAP과 계산법이 같다.
 
-### 5.3 꼭 지켜야 하는 규칙
+### 5.3 WRAP이 필요한 이유 — critical word first
+
+CPU가 cache miss로 line 하나(예: 32B)를 통째로 채워야 하는데, **당장 필요한 word가 line 중간**에 있을 수 있다.
+
+| 방식 (32B line `0x00~0x1F`, Word, 필요한 word 0x14) | 주소 순서 | 필요한 word 도착 |
+|---|---|---|
+| INCR8로 line 처음부터 | `00 → 04 → 08 → 0C → 10 → 14 → 18 → 1C` | 6번째 beat |
+| WRAP8로 필요한 word부터 | `14 → 18 → 1C → 00 → 04 → 08 → 0C → 10` | **1번째 beat** |
+
+- WRAP은 필요한 word부터 받고, line 경계에 닿으면 line 앞으로 돌아와 나머지를 채운다.
+
+```text
+wrap 경계(byte) = 2^HSIZE × beat 수
+블록 시작      = floor(시작 주소 / wrap 경계) × wrap 경계
+다음 주소      = 현재 주소 + 2^HSIZE, 블록 끝을 넘으면 블록 시작으로
+```
+
+| 예 | 출발 위치 | wrap? | 순서 |
+|---|---|---|---|
+| WRAP4, Word, 0x34 (블록 `0x30~0x3F`) | 블록 **중간** | **예** | `34 → 38 → 3C → 30` |
+| WRAP8, Word, 0x1000 (블록 `0x1000~0x101F`) | 블록 **시작** (aligned) | 아니오 | `1000 → 1004 → … → 101C` |
+
+!!! tip "aligned 시작이면 WRAP과 INCR의 주소가 같다"
+    8 beat가 블록을 정확히 채우고 끝나므로 되돌아올 일이 없다. WRAP의 "되돌아옴"은 **출발 주소가 블록 중간일 때만** 보인다.
+
+### 5.4 꼭 지켜야 하는 규칙
 
 | 규칙 | 내용 |
 |---|---|
@@ -336,7 +404,7 @@ byte lane         3      2      1     0
 | INCR | NONSEQ → SEQ → SEQ → BUSY → IDLE | ✅ | 길이 미정이라 OK |
 | INCR | NONSEQ → SEQ → BUSY → NONSEQ(새 transfer) | ✅ | 길이 미정이라 OK |
 
-### 5.4 LAST 신호 없이 burst 끝을 아는 법
+### 5.5 LAST 신호 없이 burst 끝을 아는 법
 
 | burst | 끝을 아는 방법 |
 |---|---|
@@ -558,7 +626,7 @@ AHB(특히 AHB-Lite)는 보통 **Manager 1 : Subordinate N** 구조다 (Manager�
 ```text
 메모리 맵
 0x0000 ~ 0x0FFF : Sub0 (SRAM)
-0x1000 ~ 0x1FFF : Sub1 (SFR)
+0x1000 ~ 0x1FFF : Sub1 (레지스터 블록)
 0x2000 ~ 0xFFFF : 아무도 없음 ← 0x5000 NONSEQ 접근 시
 ```
 
@@ -626,10 +694,11 @@ HADDR..──▶│              │──▶ HRESP, HRDATA
 
 | 주제 | 핵심 |
 |---|---|
+| 개념 | address/data phase를 한 cycle 겹침 → N transfer = N+1 cycle. 실무는 단일 Manager인 AHB-Lite |
 | Pipeline | 매 cycle 끝 `HREADY=1`이면 data 완료 + 다음 주소 확정, `0`이면 둘 다 유지 |
 | HTRANS | IDLE/BUSY는 0-wait OKAY. NONSEQ = 시작, SEQ = 이어짐(+size). BUSY의 주소는 다음 beat |
 | HSIZE | beat 크기, 버스 폭 이하, burst 중 불변. lane = HADDR mod 버스 바이트 |
-| Burst | HBURST = 종류 + 길이. WRAP 경계 = beat × size. INCR 1KB 경계 금지. 고정 길이는 SEQ로 끝 |
+| Burst | HBURST = 종류 + 길이. WRAP 경계 = beat × size (critical word first). INCR 1KB 경계 금지. 고정 길이는 SEQ로 끝 |
 | Waited transfer | 실제 transfer는 wait 중 고정. IDLE→NONSEQ, BUSY→SEQ(INCR은 아무거나), ERROR 후 변경 허용 |
 | HRESP | OKAY / ERROR. wait 중 OKAY. ERROR는 2-cycle (pipeline 때문) |
 | Interconnect | 나가는 건 broadcast + HSEL, 돌아오는 건 mux. 주소 받는 시점은 HREADY로 알고, 내 data phase 끝은 HREADYOUT으로 정함. 빈 주소는 default Subordinate |

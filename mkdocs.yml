@@ -165,13 +165,13 @@ nav:
               - protocols/amba/concept/index.md
               - Unit 1-1 — APB: protocols/amba/concept/amba-unit1-1-apb.md
               - Unit 1-1 — APB Q&A: protocols/amba/concept/amba-unit1-1-qa.md
-              - Unit 1-2 — AHB: protocols/amba/concept/amba-unit1-2-ahb.md
+              - Unit 1-2 — AHB: protocols/amba/concept/amba-ahb.md
               - Unit 1-2 — AHB Q&A: protocols/amba/concept/amba-unit1-2-qa.md
-              - Unit 1-2 — AHB 스펙 정리 (AXI 비교): protocols/amba/concept/amba-ahb.md
               - Unit 2 — AXI: protocols/amba/concept/amba-unit2-axi.md
               - Unit 2 — AXI Q&A: protocols/amba/concept/amba-unit2-qa.md
               - Unit 3 — AXI-Stream: protocols/amba/concept/amba-unit3-axi-stream.md
               - Unit 3 — AXI-Stream Q&A: protocols/amba/concept/amba-unit3-qa.md
+              - APB vs AHB vs AXI 비교: protocols/amba/concept/amba-bus-comparison.md
           - 코딩 Tips:
               - protocols/amba/coding-tips/index.md
               - "AXI WSTRB 기본 개념 & lane 계산": protocols/amba/coding-tips/wstrb-lane.md
