@@ -149,6 +149,7 @@ nav:
       - DRAM: memory-storage/dram.md
       - 플래시:
           - memory-storage/flash/index.md
+          - NMOS·PMOS 기본 개념: memory-storage/flash/mos-basics.md
           - Flash 셀 동작 원리: memory-storage/flash/flash-cell.md
           - 소자 · 전압 레벨 · 도메인: memory-storage/flash/flash-domain.md
           - Flash 보조 기능과 칩의 일생: memory-storage/flash/flash-support-feature.md
