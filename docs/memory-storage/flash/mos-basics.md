@@ -56,7 +56,7 @@ MOSFET은 게이트 전압으로 소스-드레인 사이 전류를 여닫는 **�
 | 비유 | 당기면 열리는 문 | 밀면 열리는 문 |
 
 !!! tip "CMOS"
-    CMOS는 소자 이름이 아니라 NMOS + PMOS를 짝지어 쓰는 **회로 방식**이다 (C = Complementary).
+    CMOS는 소자 이름이 아니라 NMOS + PMOS를 짝지어 쓰는 **회로 방식**이다 (C = Complementary). 이어서 [CMOS 기본 개념](cmos-basics.md)에서 인버터 동작을 정리한다.
 
 ---
 
